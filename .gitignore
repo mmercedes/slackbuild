@@ -1,0 +1,4 @@
+config.json
+env.yaml
+*.pyc
+.mypy_cache
