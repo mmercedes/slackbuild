@@ -35,10 +35,9 @@ def slackbuild_pubsub(data, context):
     Returns:
         str : a message to write to the log
     """
-
     global config
     global slack
 
-    message, level = BuildStatus.get(data)
+    message, level = BuildStatus.fromMessage(data)
 
     return slack.send(message, level)

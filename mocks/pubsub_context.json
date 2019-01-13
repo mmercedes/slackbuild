@@ -1,0 +1,10 @@
+{
+  "event_id": 355491206371724,
+  "timestamp": "2019-01-13T21:14:48.553Z",
+  "event_type": "google.pubsub.topic.publish",
+  "resource": {
+    "service": "pubsub.googleapis.com",
+    "name": "projects/my-project/topics/cloud-builds",
+    "type": "type.googleapis.com/google.pubsub.v1.PubsubMessage"
+  }
+}

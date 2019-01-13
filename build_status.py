@@ -13,14 +13,14 @@ class BuildStatus:
     FAILURE = '#ff0000' # red
 
     statuses = {
-        'STATUS_UNKNOWN': ('Status of the build is unknown', BuildStatus.UNKNOWN),
-        'QUEUED':         ('Build is queued', BuildStatus.INFO),
-        'WORKING':        ('Build is in progress', BuildStatus.INFO),
-        'SUCCESS':        ('Build finished successfully', BuildStatus.SUCCESS),
-        'FAILURE':        ('Build failed', BuildStatus.FAILURE),
-        'INTERNAL_ERROR': ('Build failed due to an internal error', BuildStatus.FAILURE),
-        'TIMEOUT':        ('Build timed out', BuildStatus.UNKNOWN),
-        'CANCELLED':      ('Build was cancelled', BuildStatus.UNKNOWN)
+        'STATUS_UNKNOWN': ('Status of the build is unknown', UNKNOWN),
+        'QUEUED':         ('Build is queued', INFO),
+        'WORKING':        ('Build is in progress', INFO),
+        'SUCCESS':        ('Build finished successfully', SUCCESS),
+        'FAILURE':        ('Build failed', FAILURE),
+        'INTERNAL_ERROR': ('Build failed due to an internal error', FAILURE),
+        'TIMEOUT':        ('Build timed out', UNKNOWN),
+        'CANCELLED':      ('Build was cancelled', UNKNOWN)
     }
 
     @staticmethod

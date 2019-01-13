@@ -2,3 +2,4 @@ config.json
 env.yaml
 *.pyc
 .mypy_cache
+secrets.sh

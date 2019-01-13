@@ -1,0 +1,8 @@
+{
+  "@type": "type.googleapis.com/google.pubsub.v1.PubsubMessage",
+  "attributes": {
+    "buildId": "2a246431-3b50-4b00-8fc2-345f4d8f3fd8",
+    "status": "WORKING"
+  },
+  "data": "eyJpZCI6IjJhMjQ2NDMxLTNiNTAtNGIwMC04ZmMyLTM0NWY0ZDhmM2ZkOCIsInByb2plY3RJZCI6Im15LXByb2plY3QiLCJzdGF0dXMiOiJXT1JLSU5HIiwic3RlcHMiOlt7Im5hbWUiOiJnY3IuaW8vY2xvdWQtYnVpbGRlcnMvZ3N1dGlsIiwiYXJncyI6WyJscyIsImdzOi8vbXlidWNrZXQiXX1dLCJjcmVhdGVUaW1lIjoiMjAxOS0wMS0xM1QyMToxNDo0NS41OTYxNjMwOTVaIiwic3RhcnRUaW1lIjoiMjAxOS0wMS0xM1QyMToxNDo0Ni40NTgyNjUxMDFaIiwidGltZW91dCI6IjYwMHMiLCJsb2dzQnVja2V0IjoiZ3M6Ly8xMjM0NTY3ODk5ODcuY2xvdWRidWlsZC1sb2dzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsIm9wdGlvbnMiOnsibG9nZ2luZyI6IkxFR0FDWSJ9LCJsb2dVcmwiOiJodHRwczovL2NvbnNvbGUuY2xvdWQuZ29vZ2xlLmNvbS9nY3IvYnVpbGRzLzJhMjQ2NDMxLTNiNTAtNGIwMC04ZmMyLTM0NWY0ZDhmM2ZkOD9wcm9qZWN0PTEyMzQ1Njc4OTk4NyJ9"
+}

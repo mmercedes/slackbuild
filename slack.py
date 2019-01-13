@@ -1,5 +1,6 @@
 import json
 from config import Config
+#from flask import Request
 from slackclient import SlackClient
 
 class Slack:
@@ -19,12 +20,14 @@ class Slack:
             level (str) : one of 'good', 'warning', 'danger', or '' that determines message color
 
         Returns:
-            str : log line indicating message success or failure
+            bool : true if slack API returned success
         """
 
         msg = self.message(text, level)
 
-        return self.__client.api_call("chat.postMessage", **msg)
+        resp = self.__client.api_call("chat.postMessage", **msg)
+        print(resp)
+        return resp.get('ok', False)
 
 
     def message(self, text: str, level: str):
@@ -49,3 +52,5 @@ class Slack:
             "channel": self.__config.get('slack_channel')
         }
 
+
+#    def verify_webhook(req: Request):

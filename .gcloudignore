@@ -1,0 +1,4 @@
+.git
+*.example
+*.md
+.mypy_cache
