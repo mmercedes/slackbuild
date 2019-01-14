@@ -1,6 +1,8 @@
 # slackbuild
 Google [Cloud Build](https://cloud.google.com/cloud-build/) integration for Slack
 
+[![Build Status](https://travis-ci.org/mmercedes/slackbuild.svg?branch=master)](https://travis-ci.org/mmercedes/slackbuild)
+
 ![slack notifications from cloud build](slackbuild.png)
 
 ### Install
