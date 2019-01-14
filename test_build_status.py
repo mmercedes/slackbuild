@@ -1,19 +1,22 @@
+import json
 import unittest
 from build_status import BuildStatus
 
 class TestBuildStatus(unittest.TestCase):
 
     def test_get_invalid(self):
-        (msg, color) = BuildStatus.fromMessage({})
-        self.assertIsNot(msg, '')
+        msg = BuildStatus.toMessage({})
+        self.assertEqual(type(msg), dict)
+        self.assertNotEqual(msg, {})
 
-    def test_get_valid(self):
-        (msg, color) = BuildStatus.fromMessage({ 'attributes': 
-                                            {
-                                             'buildId': '123',
-                                             'status' : 'SUCCESS'
-                                            }
-                                     })
-        self.assertEqual(msg, '123 : Build finished successfully')
-        self.assertEqual(color, BuildStatus.SUCCESS)
+    def test_get_valid_working(self):
+        f = open('mocks/pubsub_working_data.json')
+        data = json.load(f)
+        f.close()
+
+        msg = BuildStatus.toMessage(data)
+        self.assertEqual(type(msg), dict)
+        self.assertEqual(msg.get('title', ''), 'Build 2a246431 in my-project')
+        self.assertEqual(msg.get('color', ''), BuildStatus.INFO)
+        self.assertEqual(msg.get('text', ''), 'In progress (<https://console.cloud.google.com/gcr/builds/2a246431-3b50-4b00-8fc2-345f4d8f3fd8?project=123456789987|Logs>)')
         

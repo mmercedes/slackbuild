@@ -38,6 +38,9 @@ def slackbuild_pubsub(data, context):
     global config
     global slack
 
-    message, level = BuildStatus.fromMessage(data)
+    print(data)
+    print(context)
 
-    return slack.send(message, level)
+    build = BuildStatus.toMessage(data)
+
+    return slack.post_message(**build)

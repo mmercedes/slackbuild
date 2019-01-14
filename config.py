@@ -11,9 +11,11 @@ class Config:
         else:
             self.__data = config_override
 
-        if self.__data.get('slack_token', '') is '':
-            self.__data['slack_token'] = os.environ.get('SLACK_TOKEN', '')
+        if self.__data.get('slack', {}).get('token', '') is '':
+            if self.__data.get('slack', None) is None:
+                self.__data['slack'] = {}
+            self.__data['slack']['token'] = os.environ.get('SLACK_TOKEN', '')
 
-    def get(self, value):
+    def get(self, value, default=None):
         assert type(value) is type("")
-        return self.__data[value]
+        return self.__data.get(value, default)

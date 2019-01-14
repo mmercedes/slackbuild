@@ -6,51 +6,39 @@ from slackclient import SlackClient
 class Slack:
 
     def __init__(self, config: Config, client=None):
-        self.__config = config
+        self.__config = config.get('slack', {})
         if client is None:
-            self.__client = SlackClient(self.__config.get('slack_token'))
+            self.__client = SlackClient(self.__config.get('token', ''))
         else:
             self.__client = client
 
-    def send(self, text: str, level: str):
-        """ sends a message to Slack
-    
-        Parameters:
-            text  (str) : text to include in the message
-            level (str) : one of 'good', 'warning', 'danger', or '' that determines message color
-
-        Returns:
-            bool : true if slack API returned success
-        """
-
-        msg = self.message(text, level)
-
-        resp = self.__client.api_call("chat.postMessage", **msg)
-        print(resp)
-        return resp.get('ok', False)
-
-
-    def message(self, text: str, level: str):
+    def post_message(self, text='', color='', title=''):
         """ constructs a dict representing a message in the Slack API
 
         Parameters:
             text  (str) : text to include in the message
-            level (str) : one of 'good', 'warning', 'danger', or '' that determines message color
+            color (str) : hex string for message color
+            title (str) : prepended to message text in bold
 
         Returns:
-           dict : a message for the Slack API
+           bool : true if slack API returned success
         """
 
-        return {
+        message = {
             "attachments": [
                 {
+                    "title": title,
                     "fallback": text,
-                    "color": level,
-                    "text": text
+                    "text": text,
+                    "color": color
                 }
             ],
-            "channel": self.__config.get('slack_channel')
+            "channel": self.__config.get('channel')
         }
+
+        resp = self.__client.api_call("chat.postMessage", **message)
+        print(resp)
+        return resp.get('ok', False)
 
 
 #    def verify_webhook(req: Request):
