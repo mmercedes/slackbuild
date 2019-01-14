@@ -33,4 +33,4 @@ Google [Cloud Build](https://cloud.google.com/cloud-build/) integration for Slac
 - Example terraform config to avoid manual creation of cloud funcion
 - Outgoing webhook mode to support Slack 'slash commands'
   * ex `/cloudbuilds <buildId> cancel`
-
+- Standalone mode. Running with no cloud function creation
