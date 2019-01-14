@@ -2,3 +2,6 @@
 *.example
 *.md
 .mypy_cache
+.coverage
+mocks
+*.pyc

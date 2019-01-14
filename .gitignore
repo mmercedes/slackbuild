@@ -3,3 +3,4 @@ env.yaml
 *.pyc
 .mypy_cache
 secrets.sh
+.coverage

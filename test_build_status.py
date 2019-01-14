@@ -16,7 +16,8 @@ class TestBuildStatus(unittest.TestCase):
 
         msg = BuildStatus.toMessage(data)
         self.assertEqual(type(msg), dict)
-        self.assertEqual(msg.get('title', ''), 'Build 2a246431 in my-project')
+        self.assertEqual(msg.get('title', ''), 'Build in my-project')
         self.assertEqual(msg.get('color', ''), BuildStatus.INFO)
-        self.assertEqual(msg.get('text', ''), 'In progress (<https://console.cloud.google.com/gcr/builds/2a246431-3b50-4b00-8fc2-345f4d8f3fd8?project=123456789987|Logs>)')
+        self.assertEqual(msg.get('footer', ''), 'ID: 2a246431 ')
+        self.assertEqual(msg.get('text', ''), 'In progress | <https://console.cloud.google.com/gcr/builds/2a246431-3b50-4b00-8fc2-345f4d8f3fd8?project=123456789987|Logs>')
         

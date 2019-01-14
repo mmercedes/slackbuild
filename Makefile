@@ -2,9 +2,14 @@
 PYTHON := $(shell which python3 || which python)
 PIP    := $(shell which pip3 || which pip)
 
+all: tests
+
 install:
 	$(PIP) install -q -r requirements.txt
 
 tests: install
 	$(PYTHON) -m mypy --ignore-missing-imports .
 	$(PYTHON) -m unittest discover
+
+deploy: tests
+	./deploy.sh

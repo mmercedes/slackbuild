@@ -12,7 +12,7 @@ class Slack:
         else:
             self.__client = client
 
-    def post_message(self, text='', color='', title=''):
+    def post_message(self, text='', color='', title='', footer=''):
         """ constructs a dict representing a message in the Slack API
 
         Parameters:
@@ -30,7 +30,8 @@ class Slack:
                     "title": title,
                     "fallback": text,
                     "text": text,
-                    "color": color
+                    "color": color,
+                    "footer": footer
                 }
             ],
             "channel": self.__config.get('channel')

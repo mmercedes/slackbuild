@@ -20,7 +20,8 @@ class TestSlack(unittest.TestCase):
                     "title": "this is a title",
                     "fallback": "this is text",
                     "text": "this is text",
-                    "color": "red"
+                    "color": "red",
+                    "footer": "ID: 123"
                 }
             ],
             "channel": "#test"
@@ -29,7 +30,7 @@ class TestSlack(unittest.TestCase):
 
         slack = Slack(config, client=mock_client)
 
-        success = slack.post_message(text="this is text", color="red", title="this is a title")
+        success = slack.post_message(text="this is text", color="red", title="this is a title", footer="ID: 123")
         self.assertTrue(success)
 
 class Mock_SlackClient():

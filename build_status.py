@@ -13,7 +13,7 @@ class BuildStatus:
     UNKNOWN = '#d3d3d3' # grey
     INFO    = '#00bfff' # blue
     WARN    = '#ffff00' # yellow
-    SUCCESS = '#00ff00' # green
+    SUCCESS = '#32cd32' # green
     FAILURE = '#ff0000' # red
 
     statuses = {
@@ -53,16 +53,19 @@ class BuildStatus:
 
         projectId = build.get('projectId', 'unknown project id')
 
+        projectId = 'my-project'
+
         link = ''
         logUrl = build.get('logUrl', '')
         if logUrl is not '':
-            link = f' (<{logUrl}|Logs>)'
+            link = f' | <{logUrl}|Logs>'
 
-        msg = msg + took + link
+        msg = msg + link
         message = {
-            "title": f'Build {buildId} in {projectId}',
+            "title": f'Build in {projectId}',
             "color": color,
             "text": msg,
+            "footer": f'ID: {buildId} {took}'
         }
 
         return message
