@@ -1,6 +1,6 @@
 import json
 import unittest
-from build_status import BuildStatus
+from slackbuild.build_status import BuildStatus
 
 class TestBuildStatus(unittest.TestCase):
 

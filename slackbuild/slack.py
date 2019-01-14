@@ -1,5 +1,5 @@
 import json
-from config import Config
+from slackbuild.config import Config
 #from flask import Request
 from slackclient import SlackClient
 

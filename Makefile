@@ -8,8 +8,8 @@ install:
 	$(PIP) install -q -r requirements.txt
 
 tests: install
-	$(PYTHON) -m mypy --ignore-missing-imports .
-	$(PYTHON) -m unittest discover
+	$(PYTHON) -m mypy --ignore-missing-imports slackbuild
+	$(PYTHON) -m unittest discover -s tests
 
 deploy: tests
 	./deploy.sh

@@ -53,8 +53,6 @@ class BuildStatus:
 
         projectId = build.get('projectId', 'unknown project id')
 
-        projectId = 'my-project'
-
         link = ''
         logUrl = build.get('logUrl', '')
         if logUrl is not '':

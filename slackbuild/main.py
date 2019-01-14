@@ -1,7 +1,7 @@
-from slackbuild.build_status import BuildStatus
-from slackbuild.config import Config
-from slackbuild.slack import Slack
+from build_status import BuildStatus
+from config import Config
 from flask import Request
+from slack import Slack
 
 
 # create these as globals for reuse across non "cold starts"
@@ -38,7 +38,8 @@ def slackbuild_pubsub(data, context):
     global config
     global slack
 
-    print('TESTSTSFDGDFG')
+    print(data)
+    print(context)
 
     build = BuildStatus.toMessage(data)
 

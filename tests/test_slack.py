@@ -1,6 +1,6 @@
 import unittest
-from config import Config
-from slack import Slack
+from slackbuild.config import Config
+from slackbuild.slack import Slack
 
 class TestSlack(unittest.TestCase):
 
