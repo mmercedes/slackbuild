@@ -9,9 +9,9 @@ Google [Cloud Build](https://cloud.google.com/cloud-build/) integration for Slac
 
 - Clone this repo
 - Create a new incoming webhook for Slack.  [Instructions](https://api.slack.com/incoming-webhooks)
-- Add your slack token to `env.yaml`.  [Example](./env.yaml.example)
+- Add your slack token to `env.yaml`.  [Example](./env.example.yaml)
   * token is in a seperate file so you can commit your `config.yaml` without exposing the token
-- Create a `config.yaml` file.  [Commented Example](./config.yaml.example)
+- Create a `config.yaml` file.  [Commented Example](./config.example.yaml)
 ```yaml
 slack:
   channel: '#test'
