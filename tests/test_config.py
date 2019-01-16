@@ -37,7 +37,7 @@ class TestConfig(unittest.TestCase):
 
     def test_config_example(self):
         # check the example config works
-        configfile = './config.yaml.example'
+        configfile = './config.example.yaml'
 
         conf = Config(filename=configfile)
         self.assertEqual(conf.get('slack', {}).get('channel', ''), '#test')
