@@ -1,12 +1,19 @@
+import hmac
 import json
 from slackbuild.config import Config
-#from flask import Request
 from slackclient import SlackClient
 
 class Slack:
 
+    VERSION = 'v0'
+
     def __init__(self, config: Config, client=None):
         self.__config = config.get('slack', {})
+        # only get once instead of on each request
+        self.__signing_secret = self.__config.get('signing_secret', '')
+
+        self.__max_content_length = self.__config.get('webhook', {}).get('max_content_length', 50000) # 50kB default
+
         if client is None:
             self.__client = SlackClient(self.__config.get('token', ''))
         else:
@@ -42,4 +49,33 @@ class Slack:
         return resp.get('ok', False)
 
 
-#    def verify_webhook(req: Request):
+    def verify_webhook(self, req):
+        """ Verifies req is from slack
+        See: https://api.slack.com/docs/verifying-requests-from-slack
+
+        Parameter:
+            req (flask.Request) : the request object
+
+        Returns:
+            (bool, str) : bool is true if request is verified, str is a log message when invalid request
+        """
+
+        if req.content_length > self.__max_content_length or req.content_length <= 0:
+            return (False, 'Webhook request body is greater than slack.webhook.max_content_length')
+
+        body = req.get_data(as_text=True)
+
+        ts = req.headers.get('X-Slack-Request-Timestamp', '')
+
+        base = Slack.VERSION +':'+ ts +':'+ body
+
+        sig = Slack.VERSION +'='+ hmac.new(
+            bytes(self.__signing_secret, 'utf-8'),
+            bytes(base, 'utf-8'),
+            'sha256'
+        ).hexdigest()
+
+        if hmac.compare_digest(sig, req.headers.get('X-Slack-Signature', '')):
+            return (True, '')
+
+        return (False, 'Slack signature did not match')

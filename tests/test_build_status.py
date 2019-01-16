@@ -10,7 +10,7 @@ class TestBuildStatus(unittest.TestCase):
         self.assertNotEqual(msg, {})
 
     def test_get_valid_working(self):
-        f = open('mocks/pubsub_working_data.json')
+        f = open('mocks/pubsub/working_data.json')
         data = json.load(f)
         f.close()
 

@@ -1,0 +1,23 @@
+{
+  "Content-Length": "420",
+  "Content-Type": "application/x-www-form-urlencoded",
+  "Host": "us-central1-my-project.cloudfunctions.net",
+  "User-Agent": "Slackbot 1.0 (+https://api.slack.com/robots)",
+  "Accept": "application/json,*/*",
+  "Accept-Encoding": "gzip,deflate",
+  "Function-Execution-Id": "abcdefgh9suj",
+  "X-Appengine-Api-Ticket": "1111111111111111",
+  "X-Appengine-City": "arlen",
+  "X-Appengine-Citylatlong": "30.000001,-70.000002",
+  "X-Appengine-Country": "US",
+  "X-Appengine-Default-Version-Hostname": "i1234ae6c6c0d279df-tp.appspot.com",
+  "X-Appengine-Https": "on",
+  "X-Appengine-Region": "tx",
+  "X-Appengine-Request-Log-Id": "5c3d667cff0003aab5dd8306a10001737e69353533616535643564306432396637642d7470000161373537646537386563393730373434666264353566613766353764373837366a30111011",
+  "X-Appengine-User-Ip": "100.10.100.10",
+  "X-Cloud-Trace-Context": "8e6cc0e07f59d174c603a6791794ca8f/18182384539001162188;o=1",
+  "X-Forwarded-For": "100.10.100.10",
+  "X-Forwarded-Proto": "https",
+  "X-Slack-Request-Timestamp": "1531420618",
+  "X-Slack-Signature": "v0=a2114d57b48eac39b9ad189dd8316235a7b4a8d21a10bd27519666489c69b503"
+}

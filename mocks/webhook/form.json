@@ -1,0 +1,13 @@
+{
+  "token": "1234567890",
+  "team_id": "TEAMIDABCD",
+  "team_domain": "mmercedes",
+  "channel_id": "CAHABCDEF",
+  "channel_name": "test",
+  "user_id": "UAJ1A2BC3",
+  "user_name": "mmercedes",
+  "command": "/builds",
+  "text": "submit",
+  "response_url": "https://hooks.slack.com/commands/TEAMIDABCD/1234567890/abCD12efGhi3",
+  "trigger_id": "1234567890.0987654321.abCD12efGhi3"
+}

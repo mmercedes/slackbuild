@@ -15,6 +15,7 @@ class Config:
             if self.__data.get('slack', None) is None:
                 self.__data['slack'] = {}
             self.__data['slack']['token'] = os.environ.get('SLACK_TOKEN', '')
+            self.__data['slack']['signing_secret'] = os.environ.get('SLACK_SIGNING_SECRET', '')
 
     def get(self, value, default=None):
         assert type(value) is type("")
