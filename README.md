@@ -10,18 +10,14 @@ Google [Cloud Build](https://cloud.google.com/cloud-build/) integration for Slac
 - Clone this repo
 - Create a new incoming webhook for Slack.  [Instructions](https://api.slack.com/incoming-webhooks)
 - Add your slack token to `env.yaml`.  [Example](./env.yaml.example)
-  * token is in a seperate file so you can commit your `config.json` without exposing the token
-- Create a `config.json` file.  [Example](./config.json.example)
-```
-{
-    "slack": {
-        "channel": "#test" # channel to send notifications too
-    },
-    "gcloud": {
-        "project_id": "my-project", # Google Cloud Project where Cloud Build is running
-        "gcs_bucket_url": "gs://my-bucket" # Google Cloud Storage bucket to store deployed code in
-    }
-}
+  * token is in a seperate file so you can commit your `config.yaml` without exposing the token
+- Create a `config.yaml` file.  [Commented Example](./config.yaml.example)
+```yaml
+slack:
+  channel: '#test'
+gcloud:
+  project_id: 'my-project'
+  gcs_bucket_url: 'gs://my-bucket'
 ```
 - Run `./deploy.sh`
   * this assumes you have the [gcloud sdk](https://cloud.google.com/sdk/install) installed and permission to create cloud functions and gcs buckets

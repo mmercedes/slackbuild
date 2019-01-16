@@ -1,4 +1,4 @@
-config.json
+config.yaml
 env.yaml
 *.pyc
 .mypy_cache

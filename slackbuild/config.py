@@ -1,12 +1,12 @@
-import json
+import yaml
 import os
 
 class Config:
 
-    def __init__(self, filename='./config.json', config_override=None):
+    def __init__(self, filename='./config.yaml', config_override=None):
         if config_override is None:
             f = open(filename)
-            self.__data = json.load(f)
+            self.__data = yaml.load(f.read())
             f.close()
         else:
             self.__data = config_override

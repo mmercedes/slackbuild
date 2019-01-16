@@ -1,9 +1,0 @@
-{
-    "slack": {
-        "channel": "#test"
-    },
-    "gcloud": {
-        "project_id": "my-project",
-        "gcs_bucket_url": "gs://my-bucket"
-    }
-}
