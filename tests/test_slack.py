@@ -25,17 +25,21 @@ class TestSlack(unittest.TestCase):
             "build_log_url": "http://google.com",
             "build_status": "In Progress",
             "build_duration": "3 seconds",
-            "project_id": "my-project"
+            "project_id": "my-project",
+            "repo_name": "testrepo",
+            "revision_url": "github.com/test/testrepo/commits/123",
+            "revision": "123",
+            "revision_sha_short": "123"
         }
 
         expected = {
             "attachments": [
                 {
-                    "title": "Build in my-project",
-                    "text": "In Progress <http://google.com|Logs>",
+                    "text": "*testrepo*  <github.com/test/testrepo/commits/123|123>\nIn Progress | <http://google.com|Logs>",
                     "fallback": "In Progress | <http://google.com|Logs>",
                     "color": "#FFFFFF",
-                    "footer": "ID: 1234 3 seconds"
+                    "footer": "ID: 1234 3 seconds",
+                    "mrkdwn_in": ["text"]
                 }
             ],
             "channel": "#test"

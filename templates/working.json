@@ -1,0 +1,11 @@
+{
+    "attachments": [
+        {
+            "text": "${build_status}",
+            "fallback": "${build_status}",
+            "color": "${build_color}",
+            "footer": "ID: ${build_id_short}"
+        }
+    ],
+    "channel": "${channel}"
+}

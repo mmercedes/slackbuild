@@ -15,3 +15,6 @@ gcloud:
   project_id: 'my-project'
   # GCS bucket to store slackbuild source in
   gcs_bucket_url: 'my-bucket'
+# only used to generate links to revisions for message templates
+# base url to your account/orgaization where repos with cloudbuilds live
+github_url: 'https://github.com/you'

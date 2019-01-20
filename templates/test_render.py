@@ -18,6 +18,12 @@ variables = {
     "build_log_url": "http://google.com",
     "build_status": "Success",
     "build_duration": "3 seconds",
+
+    "repo_name": "testrepo",
+    "revision": "ab12cd34ef560a123",
+    "revision_sha_short": "ab12cd34",
+    "revision_url": "github.com/you/testrepo/commits/ab12cd34ef560a123",
+
     "project_id": "my-project"
 }
 

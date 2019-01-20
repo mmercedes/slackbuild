@@ -39,6 +39,7 @@ class Slack:
             contents = f.read()
 
         temp = Template(contents)
+
         msg = temp.safe_substitute(variables, channel=self.__config.get('channel'))
 
         return json.loads(msg)

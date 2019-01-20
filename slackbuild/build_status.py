@@ -94,7 +94,7 @@ class BuildStatus:
             variables['revision_sha_short'] = sha[:8]
         else:
             variables['revision'] = repoSource.get('branchName', '')
-            variables['revision_sha_short'] = ''
+            variables['revision_sha_short'] = variables['revision']
 
         variables['revision_url'] = ''
         if variables['repo_name'] is not '' and variables['revision'] is not '':

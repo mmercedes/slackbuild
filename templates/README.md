@@ -33,12 +33,26 @@ You can provide a default template for all messages, or use a template for only 
 
 ## Provided template variables
 
-* `${build_color}` - Hex value of color matching the build status (red for failure, green for success, etc)
-* `${build_id}` - the cloud build id for this message
-* `${build_id_short}` - the first eight characters of the cloud build id
-* `${build_log_url}` - URL to the logs for this cloud build
-* `${build_status}` - the current status for this cloud build
-* `${project_id}` - GCP Project ID where cloud build is running
+* `${build_color}`
+  - Hex value of color matching the build status (red for failure, green for success, etc)
+* `${build_id}`
+  - the cloud build id for this message
+* `${build_id_short}`
+  - the first eight characters of the cloud build id
+* `${build_log_url}`
+  - URL to the logs for this cloud build
+* `${build_status}`
+  - the current status for this cloud build
+* `${repo_name}`
+  - name of the source respository. Only set if source repo is provided, such as when the build is kicked off via a trigger, or if the substitution `_REPO` is present
+* `${revision}`
+  - Set to either commit sha or branch name. If build is not kicked off via a trigger, then will attempt to use of the value of the `_GIT_SHA` or `_BRANCH` substitution. See [Cloud Build docs](https://cloud.google.com/cloud-build/docs/api/reference/rest/v1/RepoSource) for more info.
+* `${revision_sha_short}`
+  - if revision is a git sha, this will be the first 8 characters, otherwise it will equal revision
+* `${revision_url}`
+  - Link to the revision that kicked off the build. If not using Google Cloud Source repos, set `github_url` in your config.yaml for this to be generated.
+* `${project_id}`
+  - GCP Project ID where cloud build is running
 
 `token` and `channel` are supplied at runtime, so don't include it in the template file.
 

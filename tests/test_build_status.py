@@ -54,7 +54,7 @@ class TestBuildStatus(unittest.TestCase):
         data = json.load(f)
         f.close()
 
-        msg, template = BuildStatus.toMessage(data, {'github_url': 'github.com/mmercedes'})
+        msg, template = BuildStatus.toMessage(data, {'github_url': 'http://github.com/mmercedes'})
         self.assertEqual(type(msg), dict)
         self.assertEqual(template, '')
         self.assertEqual(msg.get('project_id', ''), 'my-project')
@@ -68,7 +68,7 @@ class TestBuildStatus(unittest.TestCase):
         self.assertEqual(msg.get('repo_name', ''), 'testrepo')
         self.assertEqual(msg.get('revision', ''), '123')
         self.assertEqual(msg.get('revision_sha_short', ''), '123')
-        self.assertEqual(msg.get('revision_url', ''), 'github.com/mmercedes/testrepo/commits/123')
+        self.assertEqual(msg.get('revision_url', ''), 'http://github.com/mmercedes/testrepo/commits/123')
 
 
     def test_template_config(self):
