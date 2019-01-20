@@ -11,5 +11,9 @@ tests: install
 	$(PYTHON) -m mypy --ignore-missing-imports slackbuild
 	$(PYTHON) -m unittest discover -s tests
 
+coverage: install
+	$(PYTHON) -m coverage run -m unittest discover -s tests
+	$(PYTHON) -m coverage report
+
 deploy: tests
 	./deploy.sh

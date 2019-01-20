@@ -30,7 +30,7 @@ class TestBuildStatus(unittest.TestCase):
     def test_template_config(self):
 
         for status in BuildStatus.statuses.keys():
-            
+
             config_override = {
                 'slack' : {
                     'templates' : {
