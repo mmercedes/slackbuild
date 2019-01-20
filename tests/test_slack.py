@@ -15,7 +15,39 @@ class TestSlack(unittest.TestCase):
         }
     }
 
-    def test_post_message(self):
+    def test_render_message_default(self):
+        config = Config(config_override=self.config_override)
+
+        variables = {
+            "build_color": "#FFFFFF",
+            "build_id": "1234567890",
+            "build_id_short": "1234",
+            "build_log_url": "http://google.com",
+            "build_status": "In Progress",
+            "build_duration": "3 seconds",
+            "project_id": "my-project"
+        }
+
+        expected = {
+            "attachments": [
+                {
+                    "title": "Build in my-project",
+                    "text": "In Progress <{http://google.com}|Logs>",
+                    "fallback": "In Progress <{http://google.com}|Logs>",
+                    "color": "#FFFFFF",
+                    "footer": "ID: 1234 3 seconds"
+                }
+            ],
+            "channel": "#test"
+        }
+
+        mock_client = Mock_SlackClient("", "", {})
+        slack = Slack(config, client=mock_client)
+        actual = slack.render_message(variables)
+
+        self.assertEqual(actual, expected)
+
+    def test_post_message_success(self):
         config = Config(config_override=self.config_override)
 
         expected_args = {
@@ -34,7 +66,7 @@ class TestSlack(unittest.TestCase):
 
         slack = Slack(config, client=mock_client)
 
-        success = slack.post_message(text="this is text", color="red", title="this is a title", footer="ID: 123")
+        success = slack.post_message(expected_args)
         self.assertTrue(success)
 
     def test_verify_webhook_valid(self):

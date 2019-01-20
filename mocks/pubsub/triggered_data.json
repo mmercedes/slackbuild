@@ -1,0 +1,67 @@
+{
+  "buildTriggerId": "e1234cba-ac3a-4bf3-9625-532d47gc9032",
+  "createTime": "2019-01-19T22:45:38.652359983Z",
+  "finishTime": "2019-01-19T22:45:59.602660Z",
+  "id": "0277bg0b-acdd-4e7a-bc67-a61087a23d55",
+  "logUrl": "https://console.cloud.google.com/gcr/builds/0277bg0b-acdd-4e7a-bc67-a61087a23d55?project=1234567890",
+  "logsBucket": "gs://1234567890.cloudbuild-logs.googleusercontent.com",
+  "options": {
+    "logging": "LEGACY",
+    "substitutionOption": "ALLOW_LOOSE"
+  },
+  "projectId": "my-project",
+  "results": {
+    "buildStepImages": [
+      "sha256:a82d401a212f8320ad77774781f9a4ced742bd3323885e9e78d9bd58a892c2bc"
+    ]
+  },
+  "source": {
+    "repoSource": {
+      "branchName": "master",
+      "projectId": "my-project",
+      "repoName": "testrepo"
+    }
+  },
+  "sourceProvenance": {
+    "resolvedRepoSource": {
+      "commitSha": "95ee543675c84d44c5b97e86b04e5c4a77987645",
+      "projectId": "my-project",
+      "repoName": "testrepo"
+    }
+  },
+  "startTime": "2019-01-19T22:45:39.616516162Z",
+  "status": "SUCCESS",
+  "steps": [
+    {
+      "args": [
+        "ls",
+        "gs://my-bucket"
+      ],
+      "name": "gcr.io/cloud-builders/gsutil",
+      "pullTiming": {
+        "endTime": "2019-01-19T22:45:55.287689792Z",
+        "startTime": "2019-01-19T22:45:55.190087918Z"
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "endTime": "2019-01-19T22:45:58.077743314Z",
+        "startTime": "2019-01-19T22:45:55.190087918Z"
+      }
+    }
+  ],
+  "tags": [
+    "event-6570d90a-af80-100c-b275-60031fc7dd60",
+    "trigger-e8428dca-bc3b-4af3-9224-532d47df9023"
+  ],
+  "timeout": "600s",
+  "timing": {
+    "BUILD": {
+      "endTime": "2019-01-19T22:45:58.171103140Z",
+      "startTime": "2019-01-19T22:45:55.190075076Z"
+    },
+    "FETCHSOURCE": {
+      "endTime": "2019-01-19T22:45:55.097593631Z",
+      "startTime": "2019-01-19T22:45:51.397059759Z"
+    }
+  }
+}

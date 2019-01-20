@@ -35,38 +35,32 @@ class BuildStatus:
             data (dict): see https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage
 
         Returns:
-            (dict) : input args for Slack.post_message()
+            (dict) : input args for Slack.render_message()
         """
-        buildId = data.get("attributes", {}).get("buildId", "UNKNOWN").split('-')[0]
+
+        variables = {}
+
+        variables['build_id'] = data.get("attributes", {}).get("buildId", "UNKNOWN")
+        variables['build_id_short'] = variables['build_id'].split('-')[0]
+
         status = data.get("attributes", {}).get("status", "")
         build = BuildStatus.__decode_data(data.get("data", None))
 
-        (msg, color) =  BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
+        (variables['build_status'], variables['build_color']) =  BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
 
         start = build.get('startTime', None)
         end = build.get('finishTime', None)
 
-        took = ''
+        variables['build_duration'] = ''
         if start is not None and end is not None:
             delta = parser.parse(end) - parser.parse(start)
-            took = '| ' + str(delta.seconds) + ' seconds'
+            variables['build_duration'] = str(delta.seconds) + ' seconds'
 
-        projectId = build.get('projectId', 'unknown project id')
+        variables['project_id'] = build.get('projectId', 'unknown project id')
 
-        link = ''
-        logUrl = build.get('logUrl', '')
-        if logUrl is not '':
-            link = f' | <{logUrl}|Logs>'
+        variables['build_log_url'] = build.get('logUrl', '')
 
-        msg = msg + link
-        message = {
-            "title": f'Build in {projectId}',
-            "color": color,
-            "text": msg,
-            "footer": f'ID: {buildId} {took}'
-        }
-
-        return message
+        return variables
 
     @staticmethod
     def __decode_data(data):

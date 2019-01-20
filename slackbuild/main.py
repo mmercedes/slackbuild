@@ -43,4 +43,6 @@ def slackbuild_pubsub(data, context):
 
     build = BuildStatus.toMessage(data)
 
-    return slack.post_message(**build)
+    msg = slack.render_message(build)
+
+    return slack.post_message(msg)

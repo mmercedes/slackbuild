@@ -1,5 +1,7 @@
 import hmac
 import json
+import os.path
+from string import Template
 from slackbuild.config import Config
 from slackclient import SlackClient
 
@@ -19,32 +21,36 @@ class Slack:
         else:
             self.__client = client
 
-    def post_message(self, text='', color='', title='', footer=''):
-        """ constructs a dict representing a message in the Slack API
+    def render_message(self, variables: dict, template='default.json'):
+        """ constructs a dict representing a slack message from a json template
 
         Parameters:
-            text  (str) : text to include in the message
-            color (str) : hex string for message color
-            title (str) : prepended to message text in bold
+            variables (dict) : substitutions used by builtin string.Template against json template
+
+        Returns:
+            (dict) : represents a slack message, used as input to post_message
+        """
+        contents = '{}'
+        with open(os.path.dirname(__file__) + '/../templates/' + template, 'r') as f:
+            contents = f.read()
+
+        temp = Template(contents)
+        msg = temp.safe_substitute(variables, channel=self.__config.get('channel'))
+
+        return json.loads(msg)
+
+
+    def post_message(self, msg: dict):
+        """ posts a message to the Slack API
+
+        Parameters:
+           msg (dict) : represents a message for python slack api client
 
         Returns:
            bool : true if slack API returned success
         """
 
-        message = {
-            "attachments": [
-                {
-                    "title": title,
-                    "fallback": text,
-                    "text": text,
-                    "color": color,
-                    "footer": footer
-                }
-            ],
-            "channel": self.__config.get('channel')
-        }
-
-        resp = self.__client.api_call("chat.postMessage", **message)
+        resp = self.__client.api_call("chat.postMessage", **msg)
         print(resp)
         return resp.get('ok', False)
 
