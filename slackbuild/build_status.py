@@ -8,6 +8,8 @@ from dateutil import parser
 """
 class BuildStatus:
 
+    CLOUD_SOURCE_URL = 'https://source.cloud.google.com/%s/%s/+/%s'
+
     # hex code for color of slack message attachment
     # https://api.slack.com/docs/message-attachments
     UNKNOWN = '#d3d3d3' # grey
@@ -46,11 +48,21 @@ class BuildStatus:
         status = data.get("attributes", {}).get("status", "")
         build = BuildStatus.__decode_data(data.get("data", None))
 
+        (variables['build_status'], variables['build_color']) =  BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
+
+        variables['project_id'] = build.get('projectId', 'unknown project id')
+        variables['build_log_url'] = build.get('logUrl', '')
+
+        variables = BuildStatus.__add_timing(build, variables)
+        variables = BuildStatus.__add_git_info(build, variables, config)
+
         template = config.get('slack', {}).get('templates', {}).get('default', '')
         template = config.get('slack', {}).get('templates', {}).get(status.lower(), template)
 
-        (variables['build_status'], variables['build_color']) =  BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
+        return variables, template
 
+    @staticmethod
+    def __add_timing(build, variables):
         start = build.get('startTime', None)
         end = build.get('finishTime', None)
 
@@ -59,11 +71,44 @@ class BuildStatus:
             delta = parser.parse(end) - parser.parse(start)
             variables['build_duration'] = str(delta.seconds) + ' seconds'
 
-        variables['project_id'] = build.get('projectId', 'unknown project id')
+        return variables
 
-        variables['build_log_url'] = build.get('logUrl', '')
+    @staticmethod
+    def __add_git_info(build, variables, config):
+        # prefer `sourceProvenance` over `source`
+        repoSource = build.get('sourceProvenance', {}).get('resolvedRepoSource', {})
+        if not bool(repoSource):
+            repoSource = build.get('source', {}).get('repoSource', {})
+            # prefer both of those over _GIT_SHA, _BRANCH, _REPO substitutions
+            if not bool(repoSource) :
+                repoSource = {}
+                repoSource['repoName'] = build.get('substitutions', {}).get('_REPO', '')
+                repoSource['commitSha'] = build.get('substitutions', {}).get('_GIT_SHA', '')
+                repoSource['branchName'] = build.get('substitutions', {}).get('_BRANCH', '')
 
-        return variables, template
+        variables['repo_name'] = repoSource.get('repoName', '')
+        # prefer sha over branch as revision in case both are set
+        sha = repoSource.get('commitSha', '')
+        if sha is not '':
+            variables['revision'] = sha
+            variables['revision_sha_short'] = sha[:8]
+        else:
+            variables['revision'] = repoSource.get('branchName', '')
+            variables['revision_sha_short'] = ''
+
+        variables['revision_url'] = ''
+        if variables['repo_name'] is not '' and variables['revision'] is not '':
+            github_url = config.get('github_url', '')
+            if github_url is not '':
+                url = "%s/%s/commits/%s" % (github_url, variables['repo_name'], variables['revision'])
+            # assume this is a CloudSource repo
+            else:
+                url = BuildStatus.CLOUD_SOURCE_URL % (build.get('projectId', ''), variables['repo_name'], variables['revision'])
+
+            variables['revision_url'] = url
+
+        return variables
+
 
     @staticmethod
     def __decode_data(data):
