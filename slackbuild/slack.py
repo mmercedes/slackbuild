@@ -26,10 +26,14 @@ class Slack:
 
         Parameters:
             variables (dict) : substitutions used by builtin string.Template against json template
+            template  (str)  : filename of message template to use
 
         Returns:
             (dict) : represents a slack message, used as input to post_message
         """
+        if template is '':
+            template = 'default.json'
+
         contents = '{}'
         with open(os.path.dirname(__file__) + '/../templates/' + template, 'r') as f:
             contents = f.read()

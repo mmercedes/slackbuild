@@ -1,6 +1,12 @@
 slack:
   # channel to send build notifications to and allow /slash commands from
   channel: '#test'
+  # message template to use for build status
+  # see templates/README.md
+  templates:
+    success: 'success.json'
+    working: 'working.json'
+    failure: 'failure.json'
   webhook:
     # (Optional) The maximum Content-Length of webhook from slack in bytes (Defaults to 50kb)
     max_content_length: 50000

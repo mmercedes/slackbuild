@@ -28,14 +28,14 @@ class BuildStatus:
     }
 
     @staticmethod
-    def toMessage(data):
+    def toMessage(data, config):
         """ Generate a cloud build status and message from a pubsub message
 
         Parameters:
             data (dict): see https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage
 
         Returns:
-            (dict) : input args for Slack.render_message()
+            (dict, str) : dict is input args for Slack.render_message(), str is template filename is configured
         """
 
         variables = {}
@@ -45,6 +45,8 @@ class BuildStatus:
 
         status = data.get("attributes", {}).get("status", "")
         build = BuildStatus.__decode_data(data.get("data", None))
+
+        template = config.get('slack', {}).get('templates', {}).get(status.lower(), '')
 
         (variables['build_status'], variables['build_color']) =  BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
 
@@ -60,7 +62,7 @@ class BuildStatus:
 
         variables['build_log_url'] = build.get('logUrl', '')
 
-        return variables
+        return variables, template
 
     @staticmethod
     def __decode_data(data):
