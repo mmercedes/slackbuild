@@ -12,7 +12,7 @@ class TestBuildStatus(unittest.TestCase):
         self.assertEqual(template, '')
 
     def test_get_valid_working(self):
-        f = open('mocks/pubsub/working_data.json')
+        f = open('mocks/pubsub/working_manual.json')
         data = json.load(f)
         f.close()
 

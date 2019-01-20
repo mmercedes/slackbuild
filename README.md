@@ -24,9 +24,9 @@ gcloud:
   project_id: 'my-project'
   gcs_bucket_url: 'gs://my-bucket'
 ```
-- Run `./deploy.sh`
-  * this assumes you have the [gcloud sdk](https://cloud.google.com/sdk/install) installed and permission to create cloud functions and gcs buckets
-  * This skips the tests. Run `make deploy` if you'd like to run the tests. (Assumes you have python 3.7 installed)
+- Run `make deploy`
+  * Assumes you have the [gcloud sdk](https://cloud.google.com/sdk/install) installed and permission to create cloud functions and gcs buckets in the gcp project set in config.yaml
+  * Assumes you have python 3.7 installed
 
 ### TODO
 

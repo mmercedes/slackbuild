@@ -1,6 +1,6 @@
 #!/bin/bash
 
-deps=("gcloud" "gsutil" "jq")
+deps=("gcloud" "gsutil")
 
 for dep in "${deps[@]}"; do
     command -v "$dep" 1>/dev/null 2>&1
@@ -12,8 +12,9 @@ done
 
 set -e
 
-PROJECT_ID=$(jq -r .gcloud.project_id < config.json)
-BUCKET_URL=$(jq -r .gcloud.gcs_bucket_url < config.json)
+PYTHON=$(which python3 || which python)
+PROJECT_ID=$($PYTHON -c 'import yq; yq.main()' -r .gcloud.project_id < config.yaml)
+BUCKET_URL=$($PYTHON -c 'import yq; yq.main()' -r .gcloud.gcs_bucket_url < config.yaml)
 
 # log commands from this point onward
 set -x

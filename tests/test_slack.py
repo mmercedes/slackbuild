@@ -33,7 +33,7 @@ class TestSlack(unittest.TestCase):
                 {
                     "title": "Build in my-project",
                     "text": "In Progress <http://google.com|Logs>",
-                    "fallback": "In Progress <http://google.com|Logs>",
+                    "fallback": "In Progress | <http://google.com|Logs>",
                     "color": "#FFFFFF",
                     "footer": "ID: 1234 3 seconds"
                 }

@@ -3,7 +3,7 @@
         {
             "title": "Build in ${project_id}",
             "text": "${build_status} <${build_log_url}|Logs>",
-            "fallback": "${build_status} <${build_log_url}|Logs>",
+            "fallback": "${build_status} | <${build_log_url}|Logs>",
             "color": "${build_color}",
             "footer": "ID: ${build_id_short} $build_duration"
         }

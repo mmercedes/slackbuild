@@ -1,8 +1,7 @@
+from flask import Request
 from slackbuild.build_status import BuildStatus
 from slackbuild.config import Config
 from slackbuild.slack import Slack
-from flask import Request
-from flask import Response
 
 
 # create these as globals for reuse across non "cold starts"
@@ -28,7 +27,7 @@ def slackbuild_webhook(req: Request):
     if not is_valid:
         return err
 
-    return 'hello world'
+    return ''
 
 def slackbuild_pubsub(data, context):
     """ Slackbuild entrypoint when invoked via a cloudbuild pubsub message
@@ -43,8 +42,11 @@ def slackbuild_pubsub(data, context):
     global config
     global slack
 
-    print('TESTSTSFDGDFG')
+    print(data)
+    print(context)
 
-    build = BuildStatus.toMessage(data)
+    build = BuildStatus.toMessage(data, config)
 
-    return slack.post_message(**build)
+    msg = slack.render_message(build)
+
+    return slack.post_message(msg)

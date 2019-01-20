@@ -23,7 +23,7 @@ You can provide a default template for all messages, or use a template for only 
      ...
      ```
 3. Test your template
-   * `python test_render.py failed.json`
+   * `cd templates && python test_render.py failed.json`
    * ```
      {
          "text" : "12345678 failed!" 
