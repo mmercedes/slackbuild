@@ -49,3 +49,22 @@ class TestBuildStatus(unittest.TestCase):
             msg, template = BuildStatus.toMessage(data, config)
 
             self.assertEqual(template, status.lower() + '.json')
+
+
+        config_override = {
+            'slack' : {
+                'templates' : {
+                    'default': 'foo.json'
+                    }
+            }
+        }
+
+        data = {
+            'attributes': {
+                'status': 'SUCCESS'
+            }
+        }
+
+        config = Config(config_override=config_override)
+        msg, template = BuildStatus.toMessage(data, config)
+        self.assertEqual(template, 'foo.json')

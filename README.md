@@ -5,6 +5,11 @@ Google [Cloud Build](https://cloud.google.com/cloud-build/) integration for Slac
 
 [![Build Status](https://travis-ci.org/mmercedes/slackbuild.svg?branch=master)](https://travis-ci.org/mmercedes/slackbuild)
 
+### Features
+
+- Sends a slack notification when a new build is submitted or a build changes state
+- Use templates to customize your build notifications (See the [templates readme](./templates/) for how)
+
 ### Install
 
 - Clone this repo
@@ -25,7 +30,7 @@ gcloud:
 
 ### TODO
 
-- Support for custom message templates
+- ~Support for custom message templates~
 - Example terraform config to avoid manual creation of cloud funcion
 - Outgoing webhook mode to support Slack 'slash commands'
   * ex `/cloudbuilds <buildId> cancel`

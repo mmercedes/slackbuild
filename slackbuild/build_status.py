@@ -46,7 +46,8 @@ class BuildStatus:
         status = data.get("attributes", {}).get("status", "")
         build = BuildStatus.__decode_data(data.get("data", None))
 
-        template = config.get('slack', {}).get('templates', {}).get(status.lower(), '')
+        template = config.get('slack', {}).get('templates', {}).get('default', '')
+        template = config.get('slack', {}).get('templates', {}).get(status.lower(), template)
 
         (variables['build_status'], variables['build_color']) =  BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
 

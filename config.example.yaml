@@ -4,7 +4,7 @@ slack:
   # message template to use for build status
   # see templates/README.md
   templates:
-    success: 'success.json'
+    default: 'default.json'
     working: 'working.json'
     failure: 'failure.json'
   webhook:
