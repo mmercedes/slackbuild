@@ -3,6 +3,7 @@ import unittest
 from slackbuild.build_status import BuildStatus
 from slackbuild.config import Config
 
+
 class TestBuildStatus(unittest.TestCase):
 
     def test_get_invalid(self):
@@ -70,15 +71,14 @@ class TestBuildStatus(unittest.TestCase):
         self.assertEqual(msg.get('revision_sha_short', ''), '123')
         self.assertEqual(msg.get('revision_url', ''), 'http://github.com/mmercedes/testrepo/commits/123')
 
-
     def test_template_config(self):
 
         for status in BuildStatus.statuses.keys():
 
             config_override = {
-                'slack' : {
-                    'templates' : {
-                        status.lower() : status.lower() + '.json'
+                'slack': {
+                    'templates': {
+                        status.lower(): status.lower() + '.json'
                     }
                 }
             }
@@ -94,12 +94,11 @@ class TestBuildStatus(unittest.TestCase):
 
             self.assertEqual(template, status.lower() + '.json')
 
-
         config_override = {
-            'slack' : {
-                'templates' : {
+            'slack': {
+                'templates': {
                     'default': 'foo.json'
-                    }
+                }
             }
         }
 

@@ -1,6 +1,7 @@
 import yaml
 import os
 
+
 class Config:
 
     def __init__(self, filename='./config.yaml', config_override=None):
@@ -18,5 +19,4 @@ class Config:
             self.__data['slack']['signing_secret'] = os.environ.get('SLACK_SIGNING_SECRET', '')
 
     def get(self, value, default=None):
-        assert type(value) is type("")
         return self.__data.get(value, default)

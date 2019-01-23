@@ -1,6 +1,7 @@
 import unittest
 from slackbuild.config import Config
 
+
 class TestConfig(unittest.TestCase):
 
     def test_config_valid(self):
@@ -17,11 +18,11 @@ class TestConfig(unittest.TestCase):
     def test_config_missing_required(self):
         # missing all required fields
         config = {
-            'foo' : 'bar'
+            'foo': 'bar'
         }
         conf = Config(config_override=config)
         self.assertEqual(conf.get('foo'), 'bar')
-        
+
     def test_config_extra(self):
         # has unnecessary extra field
         config = {
@@ -29,7 +30,7 @@ class TestConfig(unittest.TestCase):
                 'channel': '#test',
                 'token': 'test'
             },
-            'foo'           : 'bar'
+            'foo': 'bar'
         }
         conf = Config(config_override=config)
         self.assertEqual(conf.get('foo'), 'bar')

@@ -1,7 +1,8 @@
-.git
 *.example.*
 *.md
-.mypy_cache
-.coverage
-mocks
+*.png
 *.pyc
+.coverage
+.git
+.mypy_cache
+mocks

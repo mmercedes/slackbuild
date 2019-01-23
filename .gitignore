@@ -1,6 +1,5 @@
+*.pyc
+.coverage
+.mypy_cache
 config.yaml
 env.yaml
-*.pyc
-.mypy_cache
-secrets.sh
-.coverage

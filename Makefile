@@ -8,6 +8,7 @@ install:
 	$(PIP) install -q -r requirements.txt
 
 tests: install
+	$(PYTHON) -m pycodestyle --ignore=E501 .
 	$(PYTHON) -m mypy --ignore-missing-imports slackbuild
 	$(PYTHON) -m unittest discover -s tests
 

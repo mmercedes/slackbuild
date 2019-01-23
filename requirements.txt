@@ -5,3 +5,4 @@ pyyaml>=4.2b1
 google-api-python-client>=1.7.7
 coverage
 yq>=2.7.2
+pycodestyle>=2.4.0

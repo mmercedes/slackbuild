@@ -2,14 +2,15 @@ import unittest
 from slackbuild.config import Config
 from slackbuild.slack import Slack
 
+
 class TestSlack(unittest.TestCase):
 
     config_override = {
-        'slack' : { 
-            'channel' : '#test',
-            'token'   : 'test',
+        'slack': {
+            'channel': '#test',
+            'token': 'test',
             'signing_secret': '8f742231b10e8888abcd99yyyzzz85a5',
-            'webhook' : {
+            'webhook': {
                 'max_content_length': 2
             }
         }
@@ -65,8 +66,8 @@ class TestSlack(unittest.TestCase):
                 }
             ],
             "channel": "#test"
-        }            
-        mock_client = Mock_SlackClient("chat.postMessage", { "ok": True }, expected_args)
+        }
+        mock_client = Mock_SlackClient("chat.postMessage", {"ok": True}, expected_args)
 
         slack = Slack(config, client=mock_client)
 
@@ -120,10 +121,11 @@ class TestSlack(unittest.TestCase):
             'X-Slack-Signature': 'v0=a2114d57b48eac39b9ad189dd8316235a7b4a8d21a10bd27519666489c69b503'
         }
 
-        req = Mock_Request(headers, '', config.get('slack').get('webhook').get('max_content_length')+1)
+        req = Mock_Request(headers, '', config.get('slack').get('webhook').get('max_content_length') + 1)
 
         is_valid, err = slack.verify_webhook(req)
         self.assertFalse(is_valid)
+
 
 class Mock_SlackClient():
 
@@ -137,6 +139,7 @@ class Mock_SlackClient():
         assert self.__call_args == args
         return self.__response
 
+
 class Mock_Request():
 
     def __init__(self, headers, body, content_length):
@@ -146,6 +149,7 @@ class Mock_Request():
 
     def get_data(self, as_text=True):
         return self.__body
+
 
 if __name__ == '__main__':
     unittest.main()

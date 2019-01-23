@@ -5,6 +5,7 @@ from string import Template
 from slackbuild.config import Config
 from slackclient import SlackClient
 
+
 class Slack:
 
     VERSION = 'v0'
@@ -14,7 +15,7 @@ class Slack:
         # only get once instead of on each request
         self.__signing_secret = self.__config.get('signing_secret', '')
 
-        self.__max_content_length = self.__config.get('webhook', {}).get('max_content_length', 50000) # 50kB default
+        self.__max_content_length = self.__config.get('webhook', {}).get('max_content_length', 50000)  # 50kB default
 
         if client is None:
             self.__client = SlackClient(self.__config.get('token', ''))
@@ -44,7 +45,6 @@ class Slack:
 
         return json.loads(msg)
 
-
     def post_message(self, msg: dict):
         """ posts a message to the Slack API
 
@@ -58,7 +58,6 @@ class Slack:
         resp = self.__client.api_call("chat.postMessage", **msg)
         print(resp)
         return resp.get('ok', False)
-
 
     def verify_webhook(self, req):
         """ Verifies req is from slack
@@ -78,9 +77,9 @@ class Slack:
 
         ts = req.headers.get('X-Slack-Request-Timestamp', '')
 
-        base = Slack.VERSION +':'+ ts +':'+ body
+        base = Slack.VERSION + ':' + ts + ':' + body
 
-        sig = Slack.VERSION +'='+ hmac.new(
+        sig = Slack.VERSION + '=' + hmac.new(
             bytes(self.__signing_secret, 'utf-8'),
             bytes(base, 'utf-8'),
             'sha256'

@@ -3,9 +3,9 @@ import os
 import sys
 
 sys.path.append("..")
-from slackbuild.slack import Slack
+from slackbuild.slack import Slack  # noqa
 
-if len(sys.argv) < 2 :
+if len(sys.argv) < 2:
     print('usage: python test_render.py [template file]')
     exit(1)
 

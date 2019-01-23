@@ -9,6 +9,7 @@ config = Config()
 slack = Slack(config)
 gcb = ''
 
+
 def slackbuild_webhook(req: Request):
     """ Slackbuild entrypoint when invoked via a slack webhook
 
@@ -28,6 +29,7 @@ def slackbuild_webhook(req: Request):
         return err
 
     return ''
+
 
 def slackbuild_pubsub(data, context):
     """ Slackbuild entrypoint when invoked via a cloudbuild pubsub message

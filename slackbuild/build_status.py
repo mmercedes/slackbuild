@@ -6,27 +6,31 @@ from dateutil import parser
    Wrapper for the Build.Status response from the Google CloudBuild API
    https://cloud.google.com/cloud-build/docs/api/reference/rest/v1/projects.builds#Build.Status
 """
+
+
 class BuildStatus:
 
     CLOUD_SOURCE_URL = 'https://source.cloud.google.com/%s/%s/+/%s'
 
-    # hex code for color of slack message attachment
-    # https://api.slack.com/docs/message-attachments
-    UNKNOWN = '#d3d3d3' # grey
-    INFO    = '#00bfff' # blue
-    WARN    = '#ffff00' # yellow
-    SUCCESS = '#32cd32' # green
-    FAILURE = '#ff0000' # red
+    """
+     hex code for color of slack message attachment
+     https://api.slack.com/docs/message-attachments
+    """
+    UNKNOWN = '#d3d3d3'  # grey
+    INFO = '#00bfff'     # blue
+    WARN = '#ffff00'     # yellow
+    SUCCESS = '#32cd32'  # green
+    FAILURE = '#ff0000'  # red
 
     statuses = {
         'STATUS_UNKNOWN': ('Status of the build is unknown', UNKNOWN),
-        'QUEUED':         ('Queued', UNKNOWN),
-        'WORKING':        ('In progress', INFO),
-        'SUCCESS':        ('Finished successfully', SUCCESS),
-        'FAILURE':        ('Failed', FAILURE),
+        'QUEUED': ('Queued', UNKNOWN),
+        'WORKING': ('In progress', INFO),
+        'SUCCESS': ('Finished successfully', SUCCESS),
+        'FAILURE': ('Failed', FAILURE),
         'INTERNAL_ERROR': ('Failed due to an internal error', FAILURE),
-        'TIMEOUT':        ('Timed out', UNKNOWN),
-        'CANCELLED':      ('Cancelled', UNKNOWN)
+        'TIMEOUT': ('Timed out', UNKNOWN),
+        'CANCELLED': ('Cancelled', UNKNOWN)
     }
 
     @staticmethod
@@ -48,7 +52,7 @@ class BuildStatus:
         status = data.get("attributes", {}).get("status", "")
         build = BuildStatus.__decode_data(data.get("data", None))
 
-        (variables['build_status'], variables['build_color']) =  BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
+        (variables['build_status'], variables['build_color']) = BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
 
         variables['project_id'] = build.get('projectId', 'unknown project id')
         variables['build_log_url'] = build.get('logUrl', '')
@@ -80,7 +84,7 @@ class BuildStatus:
         if not bool(repoSource):
             repoSource = build.get('source', {}).get('repoSource', {})
             # prefer both of those over _GIT_SHA, _BRANCH, _REPO substitutions
-            if not bool(repoSource) :
+            if not bool(repoSource):
                 repoSource = {}
                 repoSource['repoName'] = build.get('substitutions', {}).get('_REPO', '')
                 repoSource['commitSha'] = build.get('substitutions', {}).get('_GIT_SHA', '')
@@ -109,13 +113,11 @@ class BuildStatus:
 
         return variables
 
-
     @staticmethod
     def __decode_data(data):
         if data is None:
             return {}
 
-        tmp = base64.b64decode(data).decode("utf-8") 
+        tmp = base64.b64decode(data).decode("utf-8")
         tmp = json.loads(tmp)
         return tmp
-        
