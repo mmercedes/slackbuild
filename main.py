@@ -1,21 +1,26 @@
+import json
+from apiclient.discovery import build
+from flask import Response
 from flask import Request
+from flask import abort
 from slackbuild.build_status import BuildStatus
 from slackbuild.config import Config
 from slackbuild.slack import Slack
-
+from slackbuild.command import Command
 
 # create these as globals for reuse across non "cold starts"
 config = Config()
 slack = Slack(config)
-gcb = ''
+# https://developers.google.com/apis-explorer/#p/cloudbuild/v1/
+cloudbuild = build('cloudbuild', 'v1')
 
 
 def slackbuild_webhook(req: Request):
     """ Slackbuild entrypoint when invoked via a slack webhook
 
     Parameters:
-        data   (dict) : Pubsub Message
-        context (obj) : Context object for this event
+        request (flask.Request): The request object.
+        <http://flask.pocoo.org/docs/1.0/api/#flask.Request>
 
     Returns:
         str : a message to write to the log
@@ -23,12 +28,26 @@ def slackbuild_webhook(req: Request):
 
     global config
     global slack
+    global cloudbuild
 
-    is_valid, err = slack.verify_webhook(req)
-    if not is_valid:
-        return err
+    # slack slash commands submit a POST
+    if req.method != "POST":
+        return abort(405)
 
-    return ''
+    # not a true request from slack
+    verified, err = slack.verify_webhook(req)
+    if not verified:
+        print(err)
+        return abort(403)
+
+    data = req.form.to_dict()
+    result = Command.run(data, cloudbuild, config)
+
+    msg = slack.render_message(result, "command.json") if result is not None else ""
+
+    msg = json.dumps(msg)
+    print(msg)
+    return Response(response=msg, content_type="application/json")
 
 
 def slackbuild_pubsub(data, context):

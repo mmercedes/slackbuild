@@ -12,7 +12,7 @@ if len(sys.argv) < 2:
 template = sys.argv[1]
 
 variables = {
-    "build_color": "#32cd32",
+    "build_color": "#00c752",
     "build_id": "12345678-9012345-123425",
     "build_id_short": "12345678",
     "build_log_url": "http://google.com",

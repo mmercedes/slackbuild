@@ -32,7 +32,7 @@ class Slack:
         Returns:
             (dict) : represents a slack message, used as input to post_message
         """
-        if template is '':
+        if template == '':
             template = 'default.json'
 
         contents = '{}'

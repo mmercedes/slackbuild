@@ -12,7 +12,7 @@ class Config:
         else:
             self.__data = config_override
 
-        if self.__data.get('slack', {}).get('token', '') is '':
+        if self.__data.get('slack', {}).get('token', '') == '':
             if self.__data.get('slack', None) is None:
                 self.__data['slack'] = {}
             self.__data['slack']['token'] = os.environ.get('SLACK_TOKEN', '')

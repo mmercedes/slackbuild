@@ -1,0 +1,47 @@
+{
+  "name": "operations/build/myproject/MmE0YWQzMzBtMznkNA11ODmmLWEwZmItNTczMWUxNzMzNWI0",
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.BuildOperationMetadata",
+    "build": {
+      "id": "2a4ad330-22d3-489e-b0fa-5731e17113b4",
+      "status": "QUEUED",
+      "source": {
+        "storageSource": {
+          "bucket": "myproject_cloudbuild",
+          "object": "source/1549153424.55-827ce42f3cef4925b8cfe0925aebdde4.tgz",
+          "generation": "1549153425659965"
+        }
+      },
+      "createTime": "2019-02-03T04:46:50.196161107Z",
+      "steps": [
+        {
+          "name": "gcr.io/cloud-builders/gsutil",
+          "args": [
+            "ls",
+            "gs://slackbuild"
+          ]
+        }
+      ],
+      "timeout": "600s",
+      "projectId": "myproject",
+      "logsBucket": "gs://751327947891.cloudbuild-logs.googleusercontent.com",
+      "sourceProvenance": {
+        "resolvedStorageSource": {
+          "bucket": "myproject_cloudbuild",
+          "object": "source/1549153424.55-827ce42f3cef4925b8cfe0925aebdde4.tgz",
+          "generation": "1549153425659965"
+        }
+      },
+      "options": {
+        "substitutionOption": "ALLOW_LOOSE",
+        "logging": "LEGACY"
+      },
+      "logUrl": "https://console.cloud.google.com/gcr/builds/2a4ad330-22d3-489e-b0fa-5731e17113b4?project=1234567890",
+      "substitutions": {
+        "_GIT_SHA": "ab12cd34",
+        "_REPO": "testrepo",
+        "_FOO": "bar"
+      }
+    }
+  }
+}

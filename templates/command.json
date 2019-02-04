@@ -1,0 +1,9 @@
+{
+    "attachments": [
+        {
+            "text": "${result}",
+            "fallback": "${result}"
+        }
+    ],
+    "channel": "${channel}"
+}

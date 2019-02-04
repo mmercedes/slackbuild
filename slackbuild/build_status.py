@@ -17,10 +17,10 @@ class BuildStatus:
      https://api.slack.com/docs/message-attachments
     """
     UNKNOWN = '#d3d3d3'  # grey
-    INFO = '#00bfff'     # blue
-    WARN = '#ffff00'     # yellow
-    SUCCESS = '#32cd32'  # green
-    FAILURE = '#ff0000'  # red
+    INFO = '#1a73e8'     # blue
+    WARN = '#f09300'     # orange
+    SUCCESS = '#00c752'  # green
+    FAILURE = '#da4236'  # red
 
     statuses = {
         'STATUS_UNKNOWN': ('Status of the build is unknown', UNKNOWN),

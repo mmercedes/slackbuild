@@ -30,11 +30,11 @@ gcloud beta functions deploy slackbuild-pubsub \
     --env-vars-file=env.yaml \
     --project "$PROJECT_ID"
 
-#gcloud beta functions deploy slackbuild-webhook \
-#    --runtime python37 \
-#    --trigger-http \
-#    --entry-point slackbuild_webhook \
-#    --source=. \
-#    --stage-bucket="$BUCKET_URL" \
-#    --env-vars-file=env.yaml \
-#    --project "$PROJECT_ID"
+gcloud beta functions deploy slackbuild-webhook \
+    --runtime python37 \
+    --trigger-http \
+    --entry-point slackbuild_webhook \
+    --source=. \
+    --stage-bucket="$BUCKET_URL" \
+    --env-vars-file=env.yaml \
+    --project "$PROJECT_ID"
