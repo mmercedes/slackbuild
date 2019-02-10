@@ -54,15 +54,15 @@ class TestCommand(unittest.TestCase):
 
         # test for successful retry command
         cloudbuild = Mock_CloudBuild('cloudbuild.projects.builds.retry.execute',
-                                     {'projectId': 'myproject', 'id': '1234'},
+                                     {'projectId': 'myproject', 'id': '12345678-9012-3456-7890-123456789012'},
                                      op)
         actual = Command.run(data, cloudbuild, self.config_override)
         self.assertEqual({"result": "Submitted retry request"}, actual)
 
         # test for successful cancel command
-        data["text"] = "cancel 1234"
+        data["text"] = "cancel 12345678-9012-3456-7890-123456789012"
         cloudbuild = Mock_CloudBuild('cloudbuild.projects.builds.cancel.execute',
-                                     {'projectId': 'myproject', 'id': '1234'},
+                                     {'projectId': 'myproject', 'id': '12345678-9012-3456-7890-123456789012'},
                                      op)
         actual = Command.run(data, cloudbuild, self.config_override)
         self.assertEqual({"result": "Build cancelled"}, actual)
@@ -77,32 +77,32 @@ class TestCommand(unittest.TestCase):
 
         # test retry when client 404s
         cloudbuild = Mock_CloudBuild('cloudbuild.projects.builds.retry.execute',
-                                     {'projectId': 'myproject', 'id': '1234'},
+                                     {'projectId': 'myproject', 'id': '12345678-9012-3456-7890-123456789012'},
                                      None, error=err)
         actual = Command.run(data, cloudbuild, self.config_override)
-        self.assertEqual({"result": "No build found in myproject with ID 1234"}, actual)
+        self.assertEqual({"result": "No build found in myproject with ID 12345678-9012-3456-7890-123456789012"}, actual)
 
         # test cancel when client 404s
-        data["text"] = "cancel 1234"
+        data["text"] = "cancel 12345678-9012-3456-7890-123456789012"
         cloudbuild = Mock_CloudBuild('cloudbuild.projects.builds.cancel.execute',
-                                     {'projectId': 'myproject', 'id': '1234'},
+                                     {'projectId': 'myproject', 'id': '12345678-9012-3456-7890-123456789012'},
                                      None, error=err)
         actual = Command.run(data, cloudbuild, self.config_override)
-        self.assertEqual({"result": "No build found in myproject with ID 1234"}, actual)
+        self.assertEqual({"result": "No build found in myproject with ID 12345678-9012-3456-7890-123456789012"}, actual)
 
         err = HttpError(Mock_Response("500", "Server error"), b'', "https://cloudbuild.googleapis.com/v1/projects/myproject/builds/1234:retry")
 
         # test retry when client 500s
         cloudbuild = Mock_CloudBuild('cloudbuild.projects.builds.retry.execute',
-                                     {'projectId': 'myproject', 'id': '1234'},
+                                     {'projectId': 'myproject', 'id': '12345678-9012-3456-7890-123456789012'},
                                      None, error=err)
         actual = Command.run(data, cloudbuild, self.config_override)
         self.assertEqual({"result": "Server error"}, actual)
 
         # test cancel when client 500s
-        data["text"] = "cancel 1234"
+        data["text"] = "cancel 12345678-9012-3456-7890-123456789012"
         cloudbuild = Mock_CloudBuild('cloudbuild.projects.builds.cancel.execute',
-                                     {'projectId': 'myproject', 'id': '1234'},
+                                     {'projectId': 'myproject', 'id': '12345678-9012-3456-7890-123456789012'},
                                      None, error=err)
         actual = Command.run(data, cloudbuild, self.config_override)
         self.assertEqual({"result": "Server error"}, actual)

@@ -7,7 +7,7 @@
   "user_id": "UAJ1A2BC3",
   "user_name": "mmercedes",
   "command": "/builds",
-  "text": "retry 1234",
+  "text": "retry 12345678-9012-3456-7890-123456789012",
   "response_url": "https://hooks.slack.com/commands/TEAMIDABCD/1234567890/abCD12efGhi3",
   "trigger_id": "1234567890.0987654321.abCD12efGhi3"
 }

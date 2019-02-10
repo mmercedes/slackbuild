@@ -2,7 +2,8 @@
     "attachments": [
         {
             "text": "${result}",
-            "fallback": "${result}"
+            "fallback": "${result}",
+            "mrkdwn_in": ["text"]
         }
     ],
     "channel": "${channel}"
