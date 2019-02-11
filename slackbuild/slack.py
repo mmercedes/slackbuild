@@ -45,6 +45,56 @@ class Slack:
 
         return json.loads(msg)
 
+    @staticmethod
+    def render_interactive_message(data, success, message):
+        """ returns the original message, edited based on interaction success
+
+        Parameters:
+            data    (dict) : Request body from the slack interaction
+            success (bool) : True if the intended interaction was succesful
+            message (str)  : Message to include in replacement of the button
+
+        Returns:
+            (dict) : represents a slack message
+        """
+
+        if success:
+            user = data.get('user', {}).get('id', '')
+            user = '<@' + user + '>' if user else ''
+            field = {
+                "value": user + " " + message,
+                "short": False
+            }
+        else:
+            field = {
+                "value": ":warning: " + message,
+                "short": False
+            }
+
+        # explicitly not using dict.get() here as if this is not set there is either a logic error
+        # or the slack request format has changed, and we need to update this code
+        resp = data['original_message']
+        # edit the original message in slack
+        resp['replace_original'] = True
+
+        attachments = resp.get('attachments', [])
+        if len(attachments) > 0:
+            # assume only one interaction allowed per message
+            # remove all other actions from message
+            for i in range(len(attachments)):
+                a = attachments[i]
+                if a.get('actions', {}) != {}:
+                    resp['attachments'][i]['actions'] = []
+
+            # overwrite the fields of the last attachment to include our message
+            resp['attachments'][-1]['fields'] = [field]
+        else:
+            # not sure its possible to have an interactive message without any attachments
+            # but just in case
+            resp['attachments'] = {'fields': [field]}
+
+        return resp
+
     def post_message(self, msg: dict):
         """ posts a message to the Slack API
 
@@ -89,3 +139,60 @@ class Slack:
             return (True, '')
 
         return (False, 'Slack signature did not match')
+
+    @staticmethod
+    def is_interactive_message(data):
+        """ Check if Request data is from an interactive slack message or a /slash command
+
+        Parameters:
+            data (dict) : Request body
+
+        Returns:
+            bool : true if the request is from an interactive message
+
+        See: https://api.slack.com/docs/message-buttons
+        """
+        # to avoid parsing json everytime, do a simple check for the string
+        # for now assume we dont receive slack requests with a "payload" field
+        # other than when its an interactive message
+        return data.get('type', '') == 'interactive_message'
+
+    @staticmethod
+    def parse_command(data):
+        """ Parse a slack Request body into arguments for Command.run
+
+        Parameters:
+           data (dict) : Request body
+
+        Returns:
+           list : arguments
+        """
+        interactive = Slack.is_interactive_message(data)
+
+        if interactive:
+            actions = data.get('actions', [])
+            text = actions[0].get('value', '') if len(actions) > 0 else ''
+        else:
+            text = data.get("text", "")
+
+        argv = text.strip().split(' ')
+        argv = [a.strip() for a in argv if a.strip() is not '']
+
+        return argv
+
+    @staticmethod
+    def parse_request(req):
+        """ Turns a Request into a dict of slack hook parameters
+
+        Parameters:
+            req (Request) : flask Request object that triggered cloud function
+
+        Returns:
+            dict : slack hook parameters
+
+        """
+        data = req.form.to_dict()
+        payload = data.get('payload', '')
+        if payload != '':
+            data = json.loads(payload)
+        return data

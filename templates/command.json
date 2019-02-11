@@ -3,7 +3,8 @@
         {
             "text": "${result}",
             "fallback": "${result}",
-            "mrkdwn_in": ["text"]
+            "mrkdwn_in": ["text"],
+            "color": "${color}"
         }
     ],
     "channel": "${channel}"

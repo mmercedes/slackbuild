@@ -4,9 +4,10 @@ from flask import Response
 from flask import Request
 from flask import abort
 from slackbuild.build_status import BuildStatus
+from slackbuild.colors import Colors
+from slackbuild.command import Command
 from slackbuild.config import Config
 from slackbuild.slack import Slack
-from slackbuild.command import Command
 
 # create these as globals for reuse across non "cold starts"
 config = Config()
@@ -25,12 +26,11 @@ def slackbuild_webhook(req: Request):
     Returns:
         str : a message to write to the log
     """
-
     global config
     global slack
     global cloudbuild
 
-    # slack slash commands submit a POST
+    # slack submits a POST
     if req.method != "POST":
         return abort(405)
 
@@ -40,10 +40,23 @@ def slackbuild_webhook(req: Request):
         print(err)
         return abort(403)
 
-    data = req.form.to_dict()
-    result = Command.run(data, cloudbuild, config)
+    body = Slack.parse_request(req)
+    argv = Slack.parse_command(body)
+    msg = ""
 
-    msg = slack.render_message(result, "command.json") if result is not None else ""
+    output, success = Command.run(argv, cloudbuild, config)
+
+    if output is None:
+        if success:
+            # intentionaly not responding with a slack message
+            return ('', 200)
+        else:
+            return abort(500)
+    elif Slack.is_interactive_message(body):
+        msg = slack.render_interactive_message(body, success, output)
+    else:
+        color = Colors.SUCCESS if success else Colors.FAILURE
+        msg = slack.render_message({"result": output, "color": color}, "command.json")
 
     msg = json.dumps(msg)
     print(msg)

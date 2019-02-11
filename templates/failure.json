@@ -1,7 +1,6 @@
 {
     "attachments": [
         {
-            "title": "Build in ${project_id}",
             "text": "*${repo_name}*  <${revision_url}|${revision_sha_short}>\n${build_status} | <${build_log_url}|Logs>",
             "fallback": "${build_status} | <${build_log_url}|Logs>",
             "color": "${build_color}",
@@ -10,10 +9,10 @@
             "callback_id": "placeholder",
             "actions": [
                 {
-                    "name": "cancel",
-                    "text": "Cancel",
+                    "name": "retry",
+                    "text": "Retry",
                     "type": "button",
-                    "value": "cancel ${build_id}"
+                    "value": "retry ${build_id}"
                 }
             ]
         }

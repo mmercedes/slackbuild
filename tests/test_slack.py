@@ -1,3 +1,4 @@
+import json
 import unittest
 from slackbuild.config import Config
 from slackbuild.slack import Slack
@@ -126,6 +127,71 @@ class TestSlack(unittest.TestCase):
         is_valid, err = slack.verify_webhook(req)
         self.assertFalse(is_valid)
 
+    def test_is_interactive_message(self):
+        self.assertTrue(Slack.is_interactive_message({"type": "interactive_message"}))
+        self.assertFalse(Slack.is_interactive_message({"type": "interactive-message"}))
+        self.assertFalse(Slack.is_interactive_message({"type": ""}))
+        self.assertFalse(Slack.is_interactive_message({}))
+
+    def test_parse_command(self):
+        cases = [
+            ("retry e36544dc-82a1-cc63-bac7-a6b2d18d7ea6", ["retry", "e36544dc-82a1-cc63-bac7-a6b2d18d7ea6"]),
+            ("   ", []),
+            (" a b  c ", ["a", "b", "c"])
+        ]
+
+        actual = Slack.parse_command({})
+
+        self.assertEqual([], actual)
+
+        for case in cases:
+            text, expected = case
+            # try as a /slash command input
+            input = {"text": text}
+            actual = Slack.parse_command(input)
+            self.assertEqual(expected, actual)
+            # try as an interactive message input
+            input = {"type": "interactive_message", "actions": [{"value": text}]}
+            actual = Slack.parse_command(input)
+            self.assertEqual(expected, actual)
+
+    def test_parse_request(self):
+        f = open('mocks/webhook/interactive_message.json')
+        payload = json.load(f)
+        f.close()
+        f = open('mocks/webhook/interactive_message_payload.json')
+        expected = json.load(f)
+        f.close()
+        f = open('mocks/webhook/form.json')
+        form = json.load(f)
+        f.close()
+
+        req = Mock_Request('', payload, 1)
+        self.assertEqual(expected, Slack.parse_request(req))
+
+        req = Mock_Request('', form, 1)
+        self.assertEqual(form, Slack.parse_request(req))
+
+        req = Mock_Request('', {}, 1)
+        self.assertEqual({}, Slack.parse_request(req))
+
+    def test_render_interactive_message(self):
+        self.maxDiff = None
+
+        f = open('mocks/webhook/interactive_message_payload.json')
+        data = json.load(f)
+        f.close()
+
+        expected = {'type': 'message', 'subtype': 'bot_message', 'text': '', 'ts': '1549843673.001900', 'username': 'slackbuild', 'bot_id': 'BZAB1CDE3', 'attachments': [{'callback_id': 'placeholder', 'fallback': 'Queued | <https://console.cloud.google.com/gcr/builds/ec52f443-1f02-5d9b-bda7-1093162bcbf9?project=123456789098|Logs>', 'text': '*testrepo*  <https://source.cloud.google.com/my-project-id/testrepo/+/ab12cd34|ab12cd34>\nQueued | <https://console.cloud.google.com/gcr/builds/ec52f443-1f02-5d9b-bda7-1093162bcbf9?project=123456789098|Logs>', 'title': 'Build in my-project-id', 'footer': 'ID: ec52f443 ', 'id': 1, 'color': 'd3d3d3', 'actions': [], 'mrkdwn_in': ['text']}], 'replace_original': True}
+
+        expected['attachments'][-1]['fields'] = [{'value': '<@UAB1C2DE3> cancelled build', 'short': False}]
+
+        self.assertEqual(expected, Slack.render_interactive_message(data, True, 'cancelled build'))
+
+        expected['attachments'][-1]['fields'] = [{'value': ':warning: failed to cancel build', 'short': False}]
+
+        self.assertEqual(expected, Slack.render_interactive_message(data, False, 'failed to cancel build'))
+
 
 class Mock_SlackClient():
 
@@ -146,8 +212,12 @@ class Mock_Request():
         self.headers = headers
         self.__body = body
         self.content_length = content_length
+        self.form = self
 
     def get_data(self, as_text=True):
+        return self.__body
+
+    def to_dict(self):
         return self.__body
 
 

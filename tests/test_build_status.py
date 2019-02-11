@@ -1,6 +1,7 @@
 import json
 import unittest
 from slackbuild.build_status import BuildStatus
+from slackbuild.colors import Colors
 from slackbuild.config import Config
 
 
@@ -21,7 +22,7 @@ class TestBuildStatus(unittest.TestCase):
         self.assertEqual(type(msg), dict)
         self.assertEqual(template, '')
         self.assertEqual(msg.get('project_id', ''), 'my-project')
-        self.assertEqual(msg.get('build_color', ''), BuildStatus.INFO)
+        self.assertEqual(msg.get('build_color', ''), Colors.INFO)
         self.assertEqual(msg.get('build_id', ''), '2a246431-3b50-4b00-8fc2-345f4d8f3fd8')
         self.assertEqual(msg.get('build_id_short', ''), '2a246431')
         self.assertEqual(msg.get('build_status', ''), 'In progress')
@@ -38,7 +39,7 @@ class TestBuildStatus(unittest.TestCase):
         self.assertEqual(type(msg), dict)
         self.assertEqual(template, '')
         self.assertEqual(msg.get('project_id', ''), 'my-project')
-        self.assertEqual(msg.get('build_color', ''), BuildStatus.SUCCESS)
+        self.assertEqual(msg.get('build_color', ''), Colors.SUCCESS)
         self.assertEqual(msg.get('build_id', ''), 'cc905bd4-4611-40f7-9811-ae28003e8216')
         self.assertEqual(msg.get('build_id_short', ''), 'cc905bd4')
         self.assertEqual(msg.get('build_status', ''), 'Finished successfully')
@@ -59,7 +60,7 @@ class TestBuildStatus(unittest.TestCase):
         self.assertEqual(type(msg), dict)
         self.assertEqual(template, '')
         self.assertEqual(msg.get('project_id', ''), 'my-project')
-        self.assertEqual(msg.get('build_color', ''), BuildStatus.SUCCESS)
+        self.assertEqual(msg.get('build_color', ''), Colors.SUCCESS)
         self.assertEqual(msg.get('build_id', ''), 'b15157bc-232a-d4f3-738c-0e941bf2b5bd')
         self.assertEqual(msg.get('build_id_short', ''), 'b15157bc')
         self.assertEqual(msg.get('build_status', ''), 'Finished successfully')

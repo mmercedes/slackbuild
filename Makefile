@@ -14,7 +14,7 @@ tests: install
 
 coverage: install
 	$(PYTHON) -m coverage run -m unittest discover -s tests
-	$(PYTHON) -m coverage report
+	$(PYTHON) -m coverage report -m
 
 deploy: tests
 	./deploy.sh

@@ -1,6 +1,7 @@
 import base64
 import json
 from dateutil import parser
+from slackbuild.colors import Colors
 
 """
    Wrapper for the Build.Status response from the Google CloudBuild API
@@ -12,25 +13,15 @@ class BuildStatus:
 
     CLOUD_SOURCE_URL = 'https://source.cloud.google.com/%s/%s/+/%s'
 
-    """
-     hex code for color of slack message attachment
-     https://api.slack.com/docs/message-attachments
-    """
-    UNKNOWN = '#d3d3d3'  # grey
-    INFO = '#1a73e8'     # blue
-    WARN = '#f09300'     # orange
-    SUCCESS = '#00c752'  # green
-    FAILURE = '#da4236'  # red
-
     statuses = {
-        'STATUS_UNKNOWN': ('Status of the build is unknown', UNKNOWN),
-        'QUEUED': ('Queued', UNKNOWN),
-        'WORKING': ('In progress', INFO),
-        'SUCCESS': ('Finished successfully', SUCCESS),
-        'FAILURE': ('Failed', FAILURE),
-        'INTERNAL_ERROR': ('Failed due to an internal error', FAILURE),
-        'TIMEOUT': ('Timed out', UNKNOWN),
-        'CANCELLED': ('Cancelled', UNKNOWN)
+        'STATUS_UNKNOWN': ('Status of the build is unknown', Colors.UNKNOWN),
+        'QUEUED': ('Queued', Colors.UNKNOWN),
+        'WORKING': ('In progress', Colors.INFO),
+        'SUCCESS': ('Finished successfully', Colors.SUCCESS),
+        'FAILURE': ('Failed', Colors.FAILURE),
+        'INTERNAL_ERROR': ('Failed due to an internal error', Colors.FAILURE),
+        'TIMEOUT': ('Timed out', Colors.UNKNOWN),
+        'CANCELLED': ('Cancelled', Colors.UNKNOWN)
     }
 
     @staticmethod
@@ -52,7 +43,7 @@ class BuildStatus:
         status = data.get("attributes", {}).get("status", "")
         build = BuildStatus.__decode_data(data.get("data", None))
 
-        (variables['build_status'], variables['build_color']) = BuildStatus.statuses.get(status, ('Invalid status', BuildStatus.FAILURE))
+        (variables['build_status'], variables['build_color']) = BuildStatus.statuses.get(status, ('Invalid status', Colors.FAILURE))
 
         variables['project_id'] = build.get('projectId', 'unknown project id')
         variables['build_log_url'] = build.get('logUrl', '')

@@ -7,18 +7,9 @@ class Command:
     BAD_INPUT = "Unrecognized command\nSee '/builds help' for available commands"
 
     @staticmethod
-    def parse(data):
-        argv = data.get("text", "").strip().split(' ')
-        argv = [a.strip() for a in argv if a.strip() is not '']
-
-        return argv
-
-    @staticmethod
-    def run(data, cloudbuild, config: Config):
-        argv = Command.parse(data)
-
+    def run(argv, cloudbuild, config):
         if argv == []:
-            return {"result": Command.BAD_INPUT}
+            return Command.BAD_INPUT, False
 
         cmd = argv[0].lower()
         argv = argv[1:] if len(argv) > 1 else []
@@ -27,26 +18,29 @@ class Command:
         project = config.get('gcloud', {}).get('project_id', '')
 
         if cmd == 'cancel':
-            resp = Command.cancel(argv, cloudbuild, project)
+            resp, success = Command.cancel(argv, cloudbuild, project)
         elif cmd == 'retry':
-            resp = Command.retry(argv, cloudbuild, project)
+            resp, success = Command.retry(argv, cloudbuild, project)
         elif cmd == 'help':
-            resp = Command.help()
+            resp, success = Command.help()
         # elif cmd == 'trigger':
         #    resp =  Command.submit(argv, cloudbuild, config)
         else:
             resp = Command.BAD_INPUT
+            success = False
 
-        return {"result": str(resp)} if resp else None
+        return resp, success
 
     @staticmethod
     def help():
-        return "```" + \
-               "/builds <command> [arguments]\\n" + \
-               "/builds retry <buildId>    Retry a failed build\\n" + \
-               "/builds cancel <buildId>   Cancel a build in progress\\n" + \
-               "/builds help               Show this message\\n" + \
-               "```"
+        msg = "```" + \
+              "/builds <command> [arguments]\\n" + \
+              "/builds retry <buildId>    Retry a failed build\\n" + \
+              "/builds cancel <buildId>   Cancel a build in progress\\n" + \
+              "/builds help               Show this message\\n" + \
+              "```"
+
+        return msg, True
 
     @staticmethod
     def cancel(argv: list, cloudbuild, project):
@@ -56,21 +50,21 @@ class Command:
         buildId = argv[0] if len(argv) > 0 else ""
 
         if project == "" or buildId == "":
-            return "Usage: cancel <buildId>"
+            return "Usage: cancel <buildId>", False
 
         if len(buildId) < 36:
-            return "Invalid build ID"
+            return "Invalid build ID", False
 
         method = cloudbuild.projects().builds().cancel(projectId=project, id=buildId)
         status, msg = Command._api_call(method)
 
         if status == "200":
-            return "Build cancelled"
+            return "cancelled build", True
         elif status == "404":
-            return "No build found in %s with ID %s" % (project, argv[0])
+            return "No build found in %s with ID %s" % (project, argv[0]), False
 
         print("Unhandled status : %s - %s" % (status, msg))
-        return msg
+        return msg, False
 
     @staticmethod
     def retry(argv: list, cloudbuild, project):
@@ -80,22 +74,22 @@ class Command:
         buildId = argv[0] if len(argv) > 0 else ""
 
         if project == "" or buildId == "":
-            return "Usage: retry <buildId>"
+            return "Usage: retry <buildId>", False
 
         # GCB BuildID field is 36 characters
         if len(buildId) < 36:
-            return "Invalid build ID"
+            return "Invalid build ID", False
 
         method = cloudbuild.projects().builds().retry(projectId=project, id=buildId)
         status, msg = Command._api_call(method)
 
         if status == "200":
-            return "Submitted retry request"
+            return "submitted retry request", True
         elif status == "404":
-            return "No build found in %s with ID %s" % (project, argv[0])
+            return "No build found in %s with ID %s" % (project, argv[0]), False
 
         print("Unhandled status : %s - %s" % (status, msg))
-        return msg
+        return msg, False
 
     # TODO
     # @staticmethod

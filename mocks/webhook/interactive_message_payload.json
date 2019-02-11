@@ -1,0 +1,62 @@
+{
+  "type": "interactive_message",
+  "actions": [
+    {
+      "name": "cancel",
+      "type": "button",
+      "value": "cancel ec52f443-1f02-5d9b-bda7-1093162bcbf9"
+    }
+  ],
+  "callback_id": "placeholder",
+  "team": {
+    "id": "TABCDEFGZ",
+    "domain": "mmercedes"
+  },
+  "channel": {
+    "id": "CABCD1E2Y",
+    "name": "test"
+  },
+  "user": {
+    "id": "UAB1C2DE3",
+    "name": "mmercedes"
+  },
+  "action_ts": "1549843675.815871",
+  "message_ts": "1549843673.001900",
+  "attachment_id": "1",
+  "token": "rFABCd1EFgH2Ij3Klmno4pQR",
+  "is_app_unfurl": false,
+  "original_message": {
+    "type": "message",
+    "subtype": "bot_message",
+    "text": "",
+    "ts": "1549843673.001900",
+    "username": "slackbuild",
+    "bot_id": "BZAB1CDE3",
+    "attachments": [
+      {
+        "callback_id": "placeholder",
+        "fallback": "Queued | <https://console.cloud.google.com/gcr/builds/ec52f443-1f02-5d9b-bda7-1093162bcbf9?project=123456789098|Logs>",
+        "text": "*testrepo*  <https://source.cloud.google.com/my-project-id/testrepo/+/ab12cd34|ab12cd34>\nQueued | <https://console.cloud.google.com/gcr/builds/ec52f443-1f02-5d9b-bda7-1093162bcbf9?project=123456789098|Logs>",
+        "title": "Build in my-project-id",
+        "footer": "ID: ec52f443 ",
+        "id": 1,
+        "color": "d3d3d3",
+        "actions": [
+          {
+            "id": "1",
+            "name": "cancel",
+            "text": "Cancel",
+            "type": "button",
+            "value": "cancel ec52f443-1f02-5d9b-bda7-1093162bcbf9",
+            "style": ""
+          }
+        ],
+        "mrkdwn_in": [
+          "text"
+        ]
+      }
+    ]
+  },
+  "response_url": "https://hooks.slack.com/actions/TABCDEFGZ/635266586404/AbC1d2EFGHijkvvABC1DeFww",
+  "trigger_id": "635266586404.344469608771.9adfcfcc8fa39a116e278dc18667306a"
+}
