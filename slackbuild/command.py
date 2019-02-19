@@ -108,8 +108,14 @@ class Command:
                     return "0", op.get("error").get("message", "Unknown error")
             else:
                 return "200", op
-        except HttpError as err:
-            if not include_resp:
-                return str(err.resp.status), err._get_reason()
+        except Exception as err:
+            if isinstance(err, HttpError):
+                if not include_resp:
+                    return str(err.resp.status), err._get_reason()
+            else:
+                # TODO : only other exception seen thus far is :
+                #        ConnectionResetError: [Errno 104] Connection reset by peer
+                #        perhaps explicitly handle that by creating a new cloudbuild client
+                return "500", str(err)
 
         return "200", ""
