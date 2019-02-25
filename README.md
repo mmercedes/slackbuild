@@ -1,12 +1,13 @@
 # slackbuild
 Google [Cloud Build](https://cloud.google.com/cloud-build/) integration for Slack
 
-![slack notifications from cloud build](slackbuild.png)
+![slack notifications from cloud build](demo.gif)
 
 [![Build Status](https://travis-ci.org/mmercedes/slackbuild.svg?branch=master)](https://travis-ci.org/mmercedes/slackbuild)
 
 ### Features
 
+- Trigger cloudbuilds from slack
 - Sends a slack notification when a new build is submitted or a build changes state
 - Use templates to customize your build notifications (See the [templates readme](./templates/) for how)
 
