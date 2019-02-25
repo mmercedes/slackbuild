@@ -15,8 +15,8 @@ Google [Cloud Build](https://cloud.google.com/cloud-build/) integration for Slac
 
 - Clone this repo
 - Create a new incoming webhook for Slack.  [Instructions](https://api.slack.com/incoming-webhooks)
-- Add your slack token to `env.yaml`.  [Example](./env.example.yaml)
-  * token is in a seperate file so you can commit your `config.yaml` without exposing the token
+- Add your slack token and signing secret to `env.yaml`.  [Example](./env.example.yaml)
+  * secrets are in a seperate file so you can commit your `config.yaml` without exposing the token
 - Create a `config.yaml` file.  [Commented Example](./config.example.yaml)
 ```yaml
 slack:
@@ -31,8 +31,5 @@ gcloud:
 
 ### TODO
 
-- ~Support for custom message templates~
 - Example terraform config to avoid manual creation of cloud funcion
-- Outgoing webhook mode to support Slack 'slash commands'
-  * ex `/cloudbuilds <buildId> cancel`
-- Standalone mode. Running with no cloud function creation
+- Attempt to publish to slack app store
