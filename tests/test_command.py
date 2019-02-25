@@ -10,7 +10,10 @@ class TestCommand(unittest.TestCase):
 
     config_override = {
         "gcloud": {
-            "project_id": "myproject"
+            "project_id": "myproject",
+            "triggers": {
+                "testrepo": "12345678-9012-3456-7890-123456789012"
+            }
         }
     }
 
@@ -30,6 +33,14 @@ class TestCommand(unittest.TestCase):
         actual, success = Command.run(["cancel"], None, self.config_override)
         self.assertFalse(success)
         self.assertEqual("Usage: cancel <buildId>", actual)
+
+        actual, success = Command.run(["trigger"], None, self.config_override)
+        self.assertFalse(success)
+        self.assertEqual("Usage: trigger <alias> <branch>", actual)
+
+        actual, success = Command.run(["trigger", "foo"], None, self.config_override)
+        self.assertFalse(success)
+        self.assertEqual("Usage: trigger <alias> <branch>", actual)
 
     def test_run_success(self):
         f = open('mocks/webhook/form.json')
@@ -57,6 +68,15 @@ class TestCommand(unittest.TestCase):
         self.assertTrue(success)
         self.assertEqual("cancelled build", actual)
 
+        # test for successful trigger command
+        argv = ["trigger", "testrepo", "master"]
+        cloudbuild = Mock_CloudBuild('cloudbuild.projects.triggers.run.execute',
+                                     {'projectId': 'myproject', 'triggerId': '12345678-9012-3456-7890-123456789012', 'body': {'branchName': 'master'}},
+                                     op)
+        actual, success = Command.run(argv, cloudbuild, self.config_override)
+        self.assertTrue(success)
+        self.assertEqual("submitted trigger request", actual)
+
     def test_run_error(self):
         f = open('mocks/webhook/form.json')
         argv = Slack.parse_command(json.load(f))
@@ -81,6 +101,14 @@ class TestCommand(unittest.TestCase):
         self.assertFalse(success)
         self.assertEqual("No build found in myproject with ID 12345678-9012-3456-7890-123456789012", actual)
 
+        # test trigger when client 404s
+        cloudbuild = Mock_CloudBuild('cloudbuild.projects.triggers.run.execute',
+                                     {'projectId': 'myproject', 'triggerId': '12345678-9012-3456-7890-123456789012', 'body': {'branchName': 'master'}},
+                                     None, error=err)
+        actual, success = Command.run(["trigger", "testrepo", "master"], cloudbuild, self.config_override)
+        self.assertFalse(success)
+        self.assertEqual("No trigger found in myproject with ID 12345678-9012-3456-7890-123456789012 and branch master", actual)
+
         err = HttpError(Mock_Response("500", "Server error"), b'', "https://cloudbuild.googleapis.com/v1/projects/myproject/builds/1234:retry")
 
         # test retry when client 500s
@@ -96,6 +124,14 @@ class TestCommand(unittest.TestCase):
                                      {'projectId': 'myproject', 'id': '12345678-9012-3456-7890-123456789012'},
                                      None, error=err)
         actual, success = Command.run(["cancel", "12345678-9012-3456-7890-123456789012"], cloudbuild, self.config_override)
+        self.assertFalse(success)
+        self.assertEqual("Server error", actual)
+
+        # test trigger when client 500s
+        cloudbuild = Mock_CloudBuild('cloudbuild.projects.triggers.run.execute',
+                                     {'projectId': 'myproject', 'triggerId': '12345678-9012-3456-7890-123456789012', 'body': {'branchName': 'master'}},
+                                     None, error=err)
+        actual, success = Command.run(["trigger", "testrepo", "master"], cloudbuild, self.config_override)
         self.assertFalse(success)
         self.assertEqual("Server error", actual)
 

@@ -23,8 +23,8 @@ class Command:
             resp, success = Command.retry(argv, cloudbuild, project)
         elif cmd == 'help':
             resp, success = Command.help()
-        # elif cmd == 'trigger':
-        #    resp =  Command.submit(argv, cloudbuild, config)
+        elif cmd == 'trigger':
+            resp, success = Command.trigger(argv, cloudbuild, project, config)
         else:
             resp = Command.BAD_INPUT
             success = False
@@ -35,9 +35,10 @@ class Command:
     def help():
         msg = "```" + \
               "/builds <command> [arguments]\\n" + \
-              "/builds retry <buildId>    Retry a failed build\\n" + \
-              "/builds cancel <buildId>   Cancel a build in progress\\n" + \
-              "/builds help               Show this message\\n" + \
+              "/builds trigger <alias> <branch>  Run a cloudbuild trigger\\n" + \
+              "/builds retry <buildId>           Retry a failed build\\n" + \
+              "/builds cancel <buildId>          Cancel a build in progress\\n" + \
+              "/builds help                      Show this message\\n" + \
               "```"
 
         return msg, True
@@ -91,11 +92,30 @@ class Command:
         print("Unhandled status : %s - %s" % (status, msg))
         return msg, False
 
-    # TODO
-    # @staticmethod
-    # def trigger(argv: list, cloudbuild, project):
+    @staticmethod
+    def trigger(argv: list, cloudbuild, project, config):
+        """
+        See: https://cloud.google.com/cloud-build/docs/api/reference/rest/v1/projects.triggers/run
+        """
+        alias = argv[0] if len(argv) > 0 else ""
+        revision = argv[1] if len(argv) > 1 else ""
 
-    #    return None
+        triggers = config.get("gcloud", {}).get("triggers", {})
+        triggerId = triggers.get(alias, None)
+
+        if triggerId is None or revision == "":
+            return "Usage: trigger <alias> <branch>", False
+
+        method = cloudbuild.projects().triggers().run(projectId=project, triggerId=triggerId, body={"branchName": revision})
+        status, msg = Command._api_call(method)
+
+        if status == "200":
+            return "submitted trigger request", True
+        elif status == "404":
+            return "No trigger found in %s with ID %s and branch %s" % (project, triggerId, revision), False
+
+        print("Unhandled status : %s - %s" % (status, msg))
+        return msg, False
 
     @staticmethod
     def _api_call(method, include_resp=False):

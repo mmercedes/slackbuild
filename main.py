@@ -12,6 +12,7 @@ from slackbuild.slack import Slack
 # create these as globals for reuse across non "cold starts"
 config = Config()
 slack = Slack(config)
+# https://googleapis.github.io/google-api-python-client/docs/epy/googleapiclient-module.html
 # https://developers.google.com/apis-explorer/#p/cloudbuild/v1/
 cloudbuild = build('cloudbuild', 'v1')
 

@@ -7,6 +7,7 @@ slack:
     default: 'default.json'
     working: 'working.json'
     failure: 'failure.json'
+    cancelled: 'failure.json'
   webhook:
     # (Optional) The maximum Content-Length of webhook from slack in bytes (Defaults to 50kb)
     max_content_length: 50000
@@ -15,6 +16,11 @@ gcloud:
   project_id: 'my-project'
   # GCS bucket to store slackbuild source in
   gcs_bucket_url: 'my-bucket'
+  # alias of strings to triggerId used for /builds trigger <alias> <branch>
+  triggers:
+    # you can find the triggerId by clicking on your trigger here
+    # https://console.cloud.google.com/cloud-build/triggers/
+    testrepo: "12345678-9012-3456-7890-123456789012"
 # only used to generate links to revisions for message templates
 # base url to your account/orgaization where repos with cloudbuilds live
 github_url: 'https://github.com/you'
