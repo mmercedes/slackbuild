@@ -1,7 +1,7 @@
-# slackbuild
+# ![](images/icon.svg) slackbuild
 Google [Cloud Build](https://cloud.google.com/cloud-build/) integration for Slack
 
-![slack notifications from cloud build](demo.gif)
+![slack notifications from cloud build](images/demo.gif)
 
 [![Build Status](https://travis-ci.org/mmercedes/slackbuild.svg?branch=master)](https://travis-ci.org/mmercedes/slackbuild)
 
